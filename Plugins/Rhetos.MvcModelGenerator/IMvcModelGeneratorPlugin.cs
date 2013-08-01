@@ -19,9 +19,9 @@
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 
-namespace Rhetos.MvcGenerator
+namespace Rhetos.MvcModelGenerator
 {
-    public interface IMvcGeneratorPlugin : IConceptCodeGenerator
+    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
     {
     }
 }

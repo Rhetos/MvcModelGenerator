@@ -24,44 +24,44 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(RequiredPropertyInfo))]
-    public class RequiredTagCodeGenerator : IMvcGeneratorPlugin
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(MinLengthInfo))]
+    public class MinLengthTagCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public class RequiredTag : Tag<RequiredPropertyInfo>
+        public class MinLengthTag : Tag<MinLengthInfo>
         {
-            public RequiredTag(TagType tagType, string tagFormat, string nextTagFormat = null, string firstEvaluationContext = null, string nextEvaluationContext = null)
+            public MinLengthTag(TagType tagType, string tagFormat, string nextTagFormat = null, string firstEvaluationContext = null, string nextEvaluationContext = null)
                 : base(tagType, tagFormat, (info, format) => string.Format(CultureInfo.InvariantCulture, format, info.Property.DataStructure.Module.Name, info.Property.DataStructure.Name, info.Property.Name, "Required"), nextTagFormat, firstEvaluationContext, nextEvaluationContext)
             { }
         }
 
-        private static string ImplementationCodeSnippet(RequiredPropertyInfo info)
+        private static string ImplementationCodeSnippet(MinLengthInfo info)
         {
-            return string.Format(@"[Required]
-            ");
+            return string.Format(@"[MinLength({0})]
+            ", info.Length);
         }
 
         private static bool _isInitialCallMade;
 
-        public static bool IsTypeSupported(RequiredPropertyInfo conceptInfo)
+        public static bool IsTypeSupported(MinLengthInfo conceptInfo)
         {
-            return conceptInfo is RequiredPropertyInfo;
+            return conceptInfo is MinLengthInfo;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            RequiredPropertyInfo info = (RequiredPropertyInfo)conceptInfo;
+            MinLengthInfo info = (MinLengthInfo)conceptInfo;
 
             if (IsTypeSupported(info) && DataStructureCodeGenerator.IsTypeSupported(info.Property.DataStructure))
             {
                 GenerateInitialCode(codeBuilder);
                 try
                 {
-                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
+                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
                 }
                 catch { }
             }

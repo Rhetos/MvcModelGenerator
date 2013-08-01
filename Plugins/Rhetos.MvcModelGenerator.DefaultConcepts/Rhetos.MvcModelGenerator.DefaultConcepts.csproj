@@ -7,8 +7,8 @@
     <ProjectGuid>{E09D82F2-6148-4E3F-93D7-2047503276AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rhetos.MvcGenerator.DefaultConcepts</RootNamespace>
-    <AssemblyName>Rhetos.MvcGenerator.DefaultConcepts</AssemblyName>
+    <RootNamespace>Rhetos.MvcModelGenerator.DefaultConcepts</RootNamespace>
+    <AssemblyName>Rhetos.MvcModelGenerator.DefaultConcepts</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -85,9 +85,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rhetos.MvcGenerator\Rhetos.MvcGenerator.csproj">
+    <ProjectReference Include="..\Rhetos.MvcModelGenerator\Rhetos.MvcModelGenerator.csproj">
       <Project>{96f36fda-7af3-4ffc-8015-aa283337fd74}</Project>
-      <Name>Rhetos.MvcGenerator</Name>
+      <Name>Rhetos.MvcModelGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

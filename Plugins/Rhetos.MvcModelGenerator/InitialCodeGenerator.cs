@@ -23,9 +23,9 @@ using Rhetos.Dsl;
 using System.IO;
 using System.ComponentModel.DataAnnotations;
 
-namespace Rhetos.MvcGenerator
+namespace Rhetos.MvcModelGenerator
 {
-    internal class InitialCodeGenerator : IMvcGeneratorPlugin
+    internal class InitialCodeGenerator : IMvcModelGeneratorPlugin
     {
         private const string CodeSnippet =
 @"
@@ -33,7 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-" + MvcGeneratorTags.Using + @"
+" + MvcModelGeneratorTags.Using + @"
 
 /*
     If additional DataAnnotation attributes wants to be used for specific Model here generated, create class as following:
@@ -64,7 +64,7 @@ namespace Rhetos.Mvc.Model
          public Guid ID { get; set; }
     }
 
-    " + MvcGeneratorTags.NamespaceMembers + @"
+    " + MvcModelGeneratorTags.NamespaceMembers + @"
 
     public class MinValueIntegerAttribute : ValidationAttribute
     {
@@ -129,11 +129,11 @@ namespace Rhetos.Mvc.Model
 
 	public interface IModel
 	{
-    " + MvcGeneratorTags.InterfaceMembers + @"
+    " + MvcModelGeneratorTags.InterfaceMembers + @"
 	}
 }
 
-    " + MvcGeneratorTags.ImplementationMembers + @"
+    " + MvcModelGeneratorTags.ImplementationMembers + @"
 
 ";
 

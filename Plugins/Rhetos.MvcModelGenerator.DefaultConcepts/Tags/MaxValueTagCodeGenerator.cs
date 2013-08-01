@@ -24,44 +24,48 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(MinLengthInfo))]
-    public class MinLengthTagCodeGenerator : IMvcGeneratorPlugin
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(MaxValueInfo))]
+    public class MaxValueTagCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public class MinLengthTag : Tag<MinLengthInfo>
+        public class MaxValueTag : Tag<MaxValueInfo>
         {
-            public MinLengthTag(TagType tagType, string tagFormat, string nextTagFormat = null, string firstEvaluationContext = null, string nextEvaluationContext = null)
+            public MaxValueTag(TagType tagType, string tagFormat, string nextTagFormat = null, string firstEvaluationContext = null, string nextEvaluationContext = null)
                 : base(tagType, tagFormat, (info, format) => string.Format(CultureInfo.InvariantCulture, format, info.Property.DataStructure.Module.Name, info.Property.DataStructure.Name, info.Property.Name, "Required"), nextTagFormat, firstEvaluationContext, nextEvaluationContext)
             { }
         }
 
-        private static string ImplementationCodeSnippet(MinLengthInfo info)
+        private static string ImplementationCodeSnippet(MaxValueInfo info)
         {
-            return string.Format(@"[MinLength({0})]
-            ", info.Length);
+            var typeRange = (info.Property is IntegerPropertyInfo) ? "Integer" :
+                (info.Property is MoneyPropertyInfo || info.Property is DecimalPropertyInfo) ? "Decimal" :
+                (info.Property is DatePropertyInfo || info.Property is DateTimePropertyInfo) ? "Date" : "";
+
+            return string.Format(@"[Rhetos.Mvc.Model.MaxValue{0}(MaxValue = ""{1}"", ErrorMessage = ""Value for {2} must be less than or equal to {1}."")]
+            ", typeRange, info.Value.ToString(), info.Property.Name);
         }
 
         private static bool _isInitialCallMade;
 
-        public static bool IsTypeSupported(MinLengthInfo conceptInfo)
+        public static bool IsTypeSupported(MaxValueInfo conceptInfo)
         {
-            return conceptInfo is MinLengthInfo;
+            return conceptInfo is MaxValueInfo;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            MinLengthInfo info = (MinLengthInfo)conceptInfo;
+            MaxValueInfo info = (MaxValueInfo)conceptInfo;
 
             if (IsTypeSupported(info) && DataStructureCodeGenerator.IsTypeSupported(info.Property.DataStructure))
             {
                 GenerateInitialCode(codeBuilder);
                 try
                 {
-                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
+                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
                 }
                 catch { }
             }

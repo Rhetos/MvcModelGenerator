@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Rhetos.MvcGenerator
+namespace Rhetos.MvcModelGenerator
 {
-    public static class MvcGeneratorTags
+    public static class MvcModelGeneratorTags
     {
         public const string Using = "/*using*/";
         public const string InterfaceMembers = "/*declaration*/";

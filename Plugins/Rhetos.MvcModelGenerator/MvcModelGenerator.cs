@@ -30,12 +30,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ICodeGenerator = Rhetos.Compiler.ICodeGenerator;
 
-namespace Rhetos.MvcGenerator
+namespace Rhetos.MvcModelGenerator
 {
     [Export(typeof(IGenerator))]
-    public class MvcGenerator : IGenerator
+    public class MvcModelGenerator : IGenerator
     {
-        private readonly IPluginsContainer<IMvcGeneratorPlugin> _plugins;
+        private readonly IPluginsContainer<IMvcModelGeneratorPlugin> _plugins;
         private readonly ICodeGenerator _codeGenerator;
         private readonly IAssemblyGenerator _assemblyGenerator;
         private readonly ILogger _logger;
@@ -43,8 +43,8 @@ namespace Rhetos.MvcGenerator
         private string assemblyName = "MvcModel";
 
         [ImportingConstructor]
-        public MvcGenerator(
-            IPluginsContainer<IMvcGeneratorPlugin> plugins,
+        public MvcModelGenerator(
+            IPluginsContainer<IMvcModelGeneratorPlugin> plugins,
             ICodeGenerator codeGenerator,
             ILogProvider logProvider,
             IAssemblyGenerator assemblyGenerator
@@ -54,7 +54,7 @@ namespace Rhetos.MvcGenerator
             _codeGenerator = codeGenerator;
             _assemblyGenerator = assemblyGenerator;
 
-            _logger = logProvider.GetLogger("MvcGenerator");
+            _logger = logProvider.GetLogger("MvcModelGenerator");
             _sourceLogger = logProvider.GetLogger("Mvc Model source");
         }
 
@@ -64,7 +64,7 @@ namespace Rhetos.MvcGenerator
             _logger.Trace("References: " + string.Join(", ", assemblySource.RegisteredReferences));
             _sourceLogger.Trace(assemblySource.GeneratedCode);
             Console.WriteLine("");
-            Console.Write("    Mvc generator ... ");
+            Console.Write("    Mvc model generator ... ");
             CompilerParameters parameters = new CompilerParameters
             {
                 GenerateExecutable = false,

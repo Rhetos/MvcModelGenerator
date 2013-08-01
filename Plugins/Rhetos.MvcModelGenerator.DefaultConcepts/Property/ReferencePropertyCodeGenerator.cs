@@ -24,13 +24,13 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
+    [Export(typeof(IMvcModelGeneratorPlugin))]
     [ExportMetadata(MefProvider.Implements, typeof(PropertyInfo))]
-    public class DecimalPropertyCodeGenerator : IMvcGeneratorPlugin
+    public class ReferencePropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
         public class PropertyTag : Tag<PropertyInfo>
         {
@@ -41,8 +41,8 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
 
         private static string ImplementationCodeSnippet(PropertyInfo info)
         {
-            return string.Format(@"" + MvcGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.DataStructure.Module.Name + "_" + info.DataStructure.Name + "_" + info.Name) + @"
-            public decimal {0} {{ get; set; }}
+            return string.Format(@"" + MvcModelGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.DataStructure.Module.Name + "_" + info.DataStructure.Name + "_" + info.Name) + @"
+            public Guid {0}ID {{ get; set; }}
             
             ", info.Name);
         }
@@ -51,8 +51,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
 
         public static bool IsTypeSupported(PropertyInfo conceptInfo)
         {
-            return conceptInfo is MoneyPropertyInfo
-                || conceptInfo is DecimalPropertyInfo;
+            return conceptInfo is ReferencePropertyInfo;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
@@ -63,7 +62,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
             {
                 GenerateInitialCode(codeBuilder);
 
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.DataStructure.Module.Name + "_" + info.DataStructure.Name));
+                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.DataStructure.Module.Name + "_" + info.DataStructure.Name));
             }
         }
 

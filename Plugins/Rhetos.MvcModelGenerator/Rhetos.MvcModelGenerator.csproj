@@ -7,8 +7,8 @@
     <ProjectGuid>{96F36FDA-7AF3-4FFC-8015-AA283337FD74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rhetos.MvcGenerator</RootNamespace>
-    <AssemblyName>Rhetos.MvcGenerator</AssemblyName>
+    <RootNamespace>Rhetos.MvcModelGenerator</RootNamespace>
+    <AssemblyName>Rhetos.MvcModelGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -78,13 +78,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMvcGeneratorPlugin.cs" />
-    <Compile Include="MvcGeneratorModuleConfiguration.cs" />
-    <Compile Include="MvcGenerator.cs" />
+    <Compile Include="IMvcModelGeneratorPlugin.cs" />
+    <Compile Include="MvcModelGeneratorModuleConfiguration.cs" />
+    <Compile Include="MvcModelGenerator.cs" />
     <Compile Include="InitialCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MvcGeneratorTags.cs">
+    <Compile Include="MvcModelGeneratorTags.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -24,13 +24,13 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
+    [Export(typeof(IMvcModelGeneratorPlugin))]
     [ExportMetadata(MefProvider.Implements, typeof(DataStructureInfo))]
-    public class DataStructureCodeGenerator : IMvcGeneratorPlugin
+    public class DataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
         public class DataStructureTag : Tag<DataStructureInfo>
         {
@@ -46,7 +46,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
     {{ 
         public partial class {1} : Rhetos.Mvc.Model.BaseMvcModel
         {{
-            " + MvcGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.Module.Name + "_" + info.Name) + @"
+            " + MvcModelGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.Module.Name + "_" + info.Name) + @"
         }}
     }}
 
@@ -74,7 +74,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
             {
                 GenerateInitialCode(codeBuilder);
 
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationMembers);
+                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationMembers);
             }
         }
 

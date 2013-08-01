@@ -24,13 +24,13 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
+    [Export(typeof(IMvcModelGeneratorPlugin))]
     [ExportMetadata(MefProvider.Implements, typeof(MinValueInfo))]
-    public class MinValueTagCodeGenerator : IMvcGeneratorPlugin
+    public class MinValueTagCodeGenerator : IMvcModelGeneratorPlugin
     {
         public class MinValueTag : Tag<MinValueInfo>
         {
@@ -65,7 +65,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
                 GenerateInitialCode(codeBuilder);
                 try
                 {
-                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
+                    codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.Property.DataStructure.Module.Name + "_" + info.Property.DataStructure.Name + "_" + info.Property.Name));
                 }
                 catch { }
             }

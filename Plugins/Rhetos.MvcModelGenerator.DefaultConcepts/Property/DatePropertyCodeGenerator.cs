@@ -24,13 +24,13 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcGenerator;
+using Rhetos.MvcModelGenerator;
 
-namespace Rhetos.MvcGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    [Export(typeof(IMvcGeneratorPlugin))]
+    [Export(typeof(IMvcModelGeneratorPlugin))]
     [ExportMetadata(MefProvider.Implements, typeof(PropertyInfo))]
-    public class DatePropertyCodeGenerator : IMvcGeneratorPlugin
+    public class DatePropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
         public class PropertyTag : Tag<PropertyInfo>
         {
@@ -43,7 +43,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
         {
             var additionalDataType = (info is DatePropertyInfo) ? "[DataType(DataType.Date)]" : "[DataType(DataType.DateTime)]";
             return string.Format(@"{1}
-            " + MvcGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.DataStructure.Module.Name + "_" + info.DataStructure.Name + "_" + info.Name) + @"
+            " + MvcModelGeneratorTags.ImplementationPropertyAttributeMembers.Replace("PROPERTY_ATTRIBUTE", info.DataStructure.Module.Name + "_" + info.DataStructure.Name + "_" + info.Name) + @"
             public DateTime {0} {{ get; set; }}
             
             ", info.Name, additionalDataType);
@@ -65,7 +65,7 @@ namespace Rhetos.MvcGenerator.DefaultConcepts
             {
                 GenerateInitialCode(codeBuilder);
 
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.DataStructure.Module.Name + "_" + info.DataStructure.Name));
+                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ImplementationPropertyMembers.Replace("ENTITY", info.DataStructure.Module.Name + "_" + info.DataStructure.Name));
             }
         }
 

@@ -21,17 +21,17 @@ using Rhetos.Dsl;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
 
-namespace Rhetos.MvcGenerator
+namespace Rhetos.MvcModelGenerator
 {
     /// <summary>
     /// Specific IDslSource must be registered separately.
     /// </summary>
     [Export(typeof(Module))]
-    public class MvcGeneratorModuleConfiguration : Module
+    public class MvcModelGeneratorModuleConfiguration : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<IMvcGeneratorPlugin>(builder);
+            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<IMvcModelGeneratorPlugin>(builder);
 
             base.Load(builder);
         }
