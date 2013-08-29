@@ -31,27 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Rhetos.Compiler">
-      <HintPath>..\..\..\Source\Rhetos.Compiler\bin\Debug\Rhetos.Compiler.dll</HintPath>
-    </Reference>
     <Reference Include="Rhetos.Compiler.Interfaces">
-      <HintPath>..\..\..\Source\Rhetos.Compiler\bin\Debug\Rhetos.Compiler.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhetos.Dsl">
-      <HintPath>..\..\..\Source\Rhetos.Dsl\bin\Debug\Rhetos.Dsl.dll</HintPath>
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Compiler.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Rhetos.Dsl.DefaultConcepts">
-      <HintPath>..\..\..\CommonConcepts\Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\Rhetos.Dsl.DefaultConcepts.dll</HintPath>
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Dsl.DefaultConcepts.dll</HintPath>
     </Reference>
     <Reference Include="Rhetos.Dsl.Interfaces">
-      <HintPath>..\..\..\CommonConcepts\Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\Rhetos.Dsl.Interfaces.dll</HintPath>
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Dsl.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Rhetos.Extensibility">
-      <HintPath>..\..\..\Source\Rhetos.Extensibility\bin\Debug\Rhetos.Extensibility.dll</HintPath>
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Extensibility.dll</HintPath>
     </Reference>
-    <Reference Include="Rhetos.Extensibility.Interfaces, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Source\Rhetos.Extensibility\bin\Debug\Rhetos.Extensibility.Interfaces.dll</HintPath>
+    <Reference Include="Rhetos.Extensibility.Interfaces">
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Extensibility.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
