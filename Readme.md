@@ -28,4 +28,5 @@ Build package with Build.bat. Check BuildError.log for errors.
 Instalation package creation:
 
 1. Set the new version number in "ChangeVersion.bat" and start it.
-2. Start "CreatePackage.bat". Instalation package (.zip) is going to be created in parent directory of MvcModelGenerator.
+2. Run "Build.bat"
+3. Run "CreatePackage.bat". Instalation package (.zip) is going to be created in parent directory of MvcModelGenerator.
