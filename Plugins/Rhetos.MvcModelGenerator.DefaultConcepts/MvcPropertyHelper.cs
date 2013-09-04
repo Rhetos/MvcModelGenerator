@@ -17,7 +17,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             return string.Format(@"
         " + AttributeTag.Evaluate(info) + @"
-        public {1} {0}{2} {{ get; set; }}
+        public virtual {1} {0}{2} {{ get; set; }}
         ", info.Name, type, nameSuffix);
         }
 

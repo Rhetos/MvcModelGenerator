@@ -21,7 +21,6 @@ using Rhetos;
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using System.IO;
-using System.ComponentModel.DataAnnotations;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -138,8 +137,6 @@ namespace Rhetos.Mvc
 
             codeBuilder.AddReferencesFromDependency(typeof(Guid));
             codeBuilder.AddReferencesFromDependency(typeof(System.Linq.Enumerable));
-            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Web.Mvc.ModelValidator));
         }
 
     }

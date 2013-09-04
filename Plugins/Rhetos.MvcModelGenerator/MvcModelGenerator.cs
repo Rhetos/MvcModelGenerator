@@ -62,15 +62,8 @@ namespace Rhetos.MvcModelGenerator
             IAssemblySource assemblySource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", new InitialCodeGenerator());
             _logger.Trace("References: " + string.Join(", ", assemblySource.RegisteredReferences));
             _sourceLogger.Trace(assemblySource.GeneratedCode);
-            CompilerParameters parameters = new CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = false,
-                OutputAssembly = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyName + ".dll"),
-                IncludeDebugInformation = true,
-                CompilerOptions = "/optimize"
-            };
-            _assemblyGenerator.Generate(assemblySource, parameters);
+
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyName + ".cs"), assemblySource.GeneratedCode);
         }
 
         public IEnumerable<string> Dependencies
