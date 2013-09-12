@@ -18,7 +18,6 @@
 */
 using Rhetos.Compiler;
 using Rhetos.Extensibility;
-using Rhetos.Generator;
 using Rhetos.Logging;
 using System;
 using System.CodeDom.Compiler;

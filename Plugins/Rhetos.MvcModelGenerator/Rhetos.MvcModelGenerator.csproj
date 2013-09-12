@@ -49,9 +49,6 @@
     <Reference Include="Rhetos.Extensibility.Interfaces">
       <HintPath>..\..\Packages\Rhetos\Rhetos.Extensibility.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Rhetos.Generator.Interfaces">
-      <HintPath>..\..\Packages\Rhetos\Rhetos.Generator.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="Rhetos.Logging.Interfaces">
       <HintPath>..\..\Packages\Rhetos\Rhetos.Logging.Interfaces.dll</HintPath>
     </Reference>
