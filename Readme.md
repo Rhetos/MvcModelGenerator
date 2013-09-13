@@ -10,7 +10,7 @@ See [rhetos.org](http://www.rhetos.org/) for more information on Rhetos.
 Prerequisites
 =============
 
-Utilities in this project are based on relative path to Rhetos repository. [Rhetos source](https://github.com/Rhetos/Rhetos) must be downloaded to a folder with relative path "..\..\Rhetos". 
+Utilities in this project are based on relative path to Rhetos repository. [Rhetos source](https://github.com/Rhetos/Rhetos) must be downloaded to a folder with relative path `..\..\Rhetos`.
 
 Sample folder structure:
  
@@ -27,6 +27,6 @@ Build package with Build.bat. Check BuildError.log for errors.
 
 Instalation package creation:
 
-1. Set the new version number in "ChangeVersion.bat" and start it.
-2. Run "Build.bat"
-3. Run "CreatePackage.bat". Instalation package (.zip) is going to be created in parent directory of MvcModelGenerator.
+1. Set the new version number in `ChangeVersion.bat` and start it.
+2. Run `Build.bat`.
+3. Run `CreatePackage.bat`. Instalation package (.zip) is going to be created in parent directory of MvcModelGenerator.
