@@ -25,6 +25,7 @@ using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
 using Rhetos.MvcModelGenerator;
+using Rhetos.Utilities;
 
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
@@ -34,8 +35,10 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
     {
         private static string ImplementationCodeSnippet(RegExMatchInfo info)
         {
-            return string.Format(@"[RegularExpression(@""{1}"", ErrorMessage = ""Property {0} doesn't match required format."")]
-        ", info.Property.Name, info.Regex2);
+            return string.Format(@"[RegularExpression({0}, ErrorMessage = {1})]
+        ",
+                CsUtility.QuotedString(info.RegularExpression),
+                CsUtility.QuotedString(info.ErrorMessage));
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
