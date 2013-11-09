@@ -62,7 +62,7 @@ namespace Rhetos.MvcModelGenerator
             _logger.Trace("References: " + string.Join(", ", assemblySource.RegisteredReferences));
             _sourceLogger.Trace(assemblySource.GeneratedCode);
 
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyName + ".cs"), assemblySource.GeneratedCode);
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", assemblyName + ".cs"), assemblySource.GeneratedCode);
         }
 
         public IEnumerable<string> Dependencies
