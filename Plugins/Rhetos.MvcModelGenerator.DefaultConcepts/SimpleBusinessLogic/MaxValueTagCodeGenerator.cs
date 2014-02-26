@@ -39,13 +39,6 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         static OverridableAttribute<DateTime> _overridableAttributeDateTime = new OverridableAttribute<DateTime>(
             "Rhetos.Mvc.MaxValueDateTime", (oldValue, newValue) => newValue < oldValue, str => DateTime.Parse(str));
 
-        static string AttributeParameters(MaxValueInfo info)
-        {
-            return string.Format(
-                @"MinValue = ""{0}"", ErrorMessage = ""Value for {1} must be greater than or equal to {0}.""",
-                info.Value, info.Property.Name);
-        }
-
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             var info = (MaxValueInfo)conceptInfo;
@@ -56,7 +49,9 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
                     (info.Property is MoneyPropertyInfo || info.Property is DecimalPropertyInfo) ? (IOverridableAttribute)_overridableAttributeDecimal :
                     (info.Property is DatePropertyInfo || info.Property is DateTimePropertyInfo) ? (IOverridableAttribute)_overridableAttributeDateTime : null;
 
-                attribute.InsertOrOverrideAttribute(codeBuilder, info.Property, info.Value, AttributeParameters(info));
+                attribute.InsertOrOverrideAttribute(codeBuilder, info.Property, info.Value, string.Format(
+                    @"MaxValue = ""{0}"", ErrorMessage = ""Value for {1} must be less than or equal to {0}.""",
+                    info.Value, info.Property.Name));
             }
         }
     }
