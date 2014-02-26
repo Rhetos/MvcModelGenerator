@@ -19,10 +19,30 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using System.Security;
 
 namespace Rhetos.MvcModelGenerator
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    /// <summary>
+    /// Use codeBuilder.InsertResourceData to safely generate the resource data.
+    /// </summary>
+    public interface ICaptionsResourceGeneratorPlugin : IConceptCodeGenerator
     {
+    }
+
+    public static class CaptionsResourceGeneratorCodeBuilderExtensions
+    {
+        public static void InsertResourceData(this ICodeBuilder codeBuilder, string name, string value)
+        {
+            string code = string.Format(
+@"  <data name=""{0}"" xml:space=""preserve"">
+    <value>{1}</value>
+  </data>
+",
+                SecurityElement.Escape(name),
+                SecurityElement.Escape(value));
+
+            codeBuilder.InsertCode(code, CaptionsInitialCodePlugin.ResourceMembersTag);
+        }
     }
 }

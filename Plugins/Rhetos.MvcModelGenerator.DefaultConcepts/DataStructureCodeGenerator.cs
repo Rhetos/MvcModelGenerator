@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,15 +16,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Xml;
+
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcModelGenerator;
+using System.ComponentModel.Composition;
 
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
@@ -32,28 +29,10 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
     [ExportMetadata(MefProvider.Implements, typeof(DataStructureInfo))]
     public class DataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public static readonly CsTag<DataStructureInfo> ClonePropertiesTag = "CloneProperties";
+        public static readonly CsTag<DataStructureInfo> PropertiesTag = "Properties";
+        public static readonly CsTag<DataStructureInfo> AttributesTag = "Attributes";
 
-        private static string ImplementationCodeSnippet(DataStructureInfo info)
-        {
-            return string.Format(@"
-namespace {0} 
-{{ 
-    public partial class {1} : Rhetos.Mvc.BaseMvcModel
-    {{
-        {2}
-    }}
-}}
-
-    ",
-                info.Module.Name, 
-                info.Name, 
-                ClonePropertiesTag.Evaluate(info));
-        }
-
-        private static bool _isInitialCallMade;
-
-        public static bool IsTypeSupported(DataStructureInfo conceptInfo)
+        public static bool IsSupported(DataStructureInfo conceptInfo)
         {
             return conceptInfo is EntityInfo
                 || conceptInfo is BrowseDataStructureInfo
@@ -61,26 +40,48 @@ namespace {0}
                 || conceptInfo is LegacyEntityWithAutoCreatedViewInfo
                 || conceptInfo is SqlQueryableInfo
                 || conceptInfo is QueryableExtensionInfo
-                || conceptInfo is ComputedInfo;
+                || conceptInfo is ComputedInfo
+                || conceptInfo is ActionInfo;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             DataStructureInfo info = (DataStructureInfo)conceptInfo;
 
-            if (IsTypeSupported(info))
+            if (IsSupported(info))
             {
-                GenerateInitialCode(codeBuilder);
-
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelGeneratorTags.ModuleMembers);
+                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelInitialCodeGenerator.ModuleMembersTag);
+                _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, AttributeProperties(info));
             }
         }
 
-        private static void GenerateInitialCode(ICodeBuilder codeBuilder)
+        private static string ImplementationCodeSnippet(DataStructureInfo info)
         {
-            if (_isInitialCallMade)
-                return;
-            _isInitialCallMade = true;
+            return string.Format(@"
+namespace Rhetos.Mvc.{0}
+{{
+    {3}
+    public partial class {1} : Rhetos.Mvc.BaseMvcModel
+    {{
+        public const string Entity{1} = ""{1}"";
+
+        {2}
+    }}
+}}
+",
+                info.Module.Name,
+                info.Name,
+                PropertiesTag.Evaluate(info),
+                AttributesTag.Evaluate(info));
+        }
+
+        static SimpleOverridableDataStructureAttribute _localizedDisplayAttribute = new SimpleOverridableDataStructureAttribute("Rhetos.Mvc.LocalizedDisplayName", false);
+
+        static string AttributeProperties(DataStructureInfo info)
+        {
+            return string.Format(@"""{0}"", typeof({1})",
+                DataStructureCaption.GetCaptionResourceKey(info),
+                Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName);
         }
     }
 }

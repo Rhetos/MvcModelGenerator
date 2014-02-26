@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,39 +16,28 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Xml;
+
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcModelGenerator;
+using System.ComponentModel.Composition;
 
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(MinLengthInfo))]
-    public class MinLengthTagCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(MaxLengthInfo))]
+    public class MaxLengthTagCodeGenerator : IMvcModelGeneratorPlugin
     {
-        private static string ImplementationCodeSnippet(MinLengthInfo info)
-        {
-            return string.Format(@"[MinLength({0})]
-        ", info.Length);
-        }
+        static OverridableAttribute<int> _overridableAttribute = new OverridableAttribute<int>(
+            "MaxLength", (oldValue, newValue) => newValue < oldValue);
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            if (conceptInfo is MinLengthInfo)
-            {
-                MinLengthInfo info = (MinLengthInfo)conceptInfo;
+            var info = (MaxLengthInfo)conceptInfo;
 
-                if (DataStructureCodeGenerator.IsTypeSupported(info.Property.DataStructure))
-                {
-                    codeBuilder.InsertCode(ImplementationCodeSnippet((MinLengthInfo)info), MvcPropertyHelper.AttributeTag, info.Property);
-                }
-            }
+            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
+                _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, int.Parse(info.Length), info.Length);
         }
     }
 }

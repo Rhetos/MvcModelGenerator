@@ -23,17 +23,28 @@ using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
 using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(ReferencePropertyInfo))]
-    public class ReferencePropertyCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(PropertyInfo))]
+    [ExportMetadata(MefProvider.DependsOn, typeof(SimplePropertyCodeGenerator))]
+    public class HideIdFieldsCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static SimpleOverridableAttribute _renderModeAttribute = new SimpleOverridableAttribute("Rhetos.Mvc.RenderMode", false);
+
+        public static bool IsSupported(PropertyInfo info)
+        {
+            return DataStructureCodeGenerator.IsSupported(info.DataStructure)
+                && (info is GuidPropertyInfo || info is IntegerPropertyInfo);
+        }
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            ReferencePropertyInfo info = (ReferencePropertyInfo)conceptInfo;
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
+            var info = (PropertyInfo)conceptInfo;
+
+            if (IsSupported(info))
+                if (info.Name.EndsWith("ID"))
+                    _renderModeAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"Rhetos.Mvc.RenderMode.EditModeOnly");
         }
     }
 }

@@ -26,14 +26,17 @@ using System.ComponentModel.Composition;
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(ReferencePropertyInfo))]
-    public class ReferencePropertyCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(DatePropertyInfo))]
+    public class DatePropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static SimpleOverridableAttribute _formatAttribute = new SimpleOverridableAttribute("DisplayFormat", false);
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            ReferencePropertyInfo info = (ReferencePropertyInfo)conceptInfo;
+            var info = (DatePropertyInfo)conceptInfo;
+
             if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
+                _formatAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"DataFormatString = ""{0:d}"", ApplyFormatInEditMode = true");
         }
     }
 }

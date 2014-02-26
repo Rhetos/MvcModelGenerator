@@ -34,6 +34,9 @@
     <Reference Include="Autofac">
       <HintPath>..\..\Packages\Autofac\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Rhetos.Compiler">
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Compiler.dll</HintPath>
+    </Reference>
     <Reference Include="Rhetos.Compiler.Interfaces">
       <HintPath>..\..\Packages\Rhetos\Rhetos.Compiler.Interfaces.dll</HintPath>
     </Reference>
@@ -52,9 +55,16 @@
     <Reference Include="Rhetos.Logging.Interfaces">
       <HintPath>..\..\Packages\Rhetos\Rhetos.Logging.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Rhetos.Utilities, Version=0.9.13.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Rhetos\Rhetos.Utilities.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,15 +72,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaptionsResourceGenerator.cs" />
+    <Compile Include="CaptionsInitialCodePlugin.cs" />
+    <Compile Include="CaptionsValueGenerator.cs" />
+    <Compile Include="ICaptionsValuePlugin.cs" />
+    <Compile Include="ICaptionsResourceGeneratorPlugin.cs" />
+    <Compile Include="ICaptionsProvider.cs" />
     <Compile Include="IMvcModelGeneratorPlugin.cs" />
     <Compile Include="MvcModelGeneratorModuleConfiguration.cs" />
     <Compile Include="MvcModelGenerator.cs" />
-    <Compile Include="InitialCodeGenerator.cs">
+    <Compile Include="MvcModelInitialCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MvcModelGeneratorTags.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="SimpleAssemblySource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

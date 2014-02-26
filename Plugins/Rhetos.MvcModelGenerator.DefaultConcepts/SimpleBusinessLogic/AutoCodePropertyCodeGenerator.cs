@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,39 +16,27 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Xml;
+
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcModelGenerator;
+using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(RequiredPropertyInfo))]
-    public class RequiredTagCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(AutoCodePropertyInfo))]
+    public class AutoCodePropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
-        private static string ImplementationCodeSnippet(RequiredPropertyInfo info)
-        {
-            return string.Format(@"[Required]
-        ");
-        }
+        static SimpleOverridableAttribute _defaultAttribute = new SimpleOverridableAttribute("DefaultValue", true);
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            if (conceptInfo is RequiredPropertyInfo)
-            {
-                RequiredPropertyInfo info = (RequiredPropertyInfo)conceptInfo;
+            var info = (AutoCodePropertyInfo)conceptInfo;
 
-                if (DataStructureCodeGenerator.IsTypeSupported(info.Property.DataStructure))
-                {
-                    codeBuilder.InsertCode(ImplementationCodeSnippet((RequiredPropertyInfo)info), MvcPropertyHelper.AttributeTag, info.Property);
-                }
-            }
+            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
+                _defaultAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, @"""+""");
         }
     }
 }

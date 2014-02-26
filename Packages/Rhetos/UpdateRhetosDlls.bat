@@ -12,14 +12,21 @@ DEL /Q /F "*.dll" || GOTO Error1
 DEL /Q /F "*.xml" || GOTO Error1
 DEL /Q /F "*.pdb" || GOTO Error1
 
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Compiler.Interfaces\bin\Debug\Rhetos.Compiler.Interfaces.??? || GOTO Error1
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Dsl.Interfaces\bin\Debug\Rhetos.Dsl.Interfaces.??? || GOTO Error1
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Extensibility\bin\Debug\Rhetos.Extensibility.??? || GOTO Error1
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Extensibility.Interfaces\bin\Debug\Rhetos.Extensibility.Interfaces.??? || GOTO Error1
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Logging.Interfaces\bin\Debug\Rhetos.Logging.Interfaces.??? || GOTO Error1
-@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Utilities\bin\Debug\Rhetos.Utilities.??? || GOTO Error1
-
+@CALL :SafeCopy ..\..\..\..\Rhetos\CommonConcepts\Plugins\Rhetos.Dom.DefaultConcepts.Interfaces\bin\Debug\Rhetos.Dom.DefaultConcepts.Interfaces.??? || GOTO Error1
 @CALL :SafeCopy ..\..\..\..\Rhetos\CommonConcepts\Plugins\Rhetos.Dsl.DefaultConcepts\bin\Debug\Rhetos.Dsl.DefaultConcepts.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\CommonConcepts\Plugins\Rhetos.Processing.DefaultCommands.Interfaces\bin\Debug\Rhetos.Processing.DefaultCommands.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Compiler.Interfaces\bin\Debug\Rhetos.Compiler.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Compiler\bin\Debug\Rhetos.Compiler.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Dsl.Interfaces\bin\Debug\Rhetos.Dsl.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Extensibility.Interfaces\bin\Debug\Rhetos.Extensibility.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Extensibility\bin\Debug\Rhetos.Extensibility.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Interfaces\bin\Debug\Rhetos.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Logging.Interfaces\bin\Debug\Rhetos.Logging.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Logging\bin\Debug\Rhetos.Logging.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Processing.Interfaces\bin\Debug\Rhetos.Processing.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Security.Interfaces\bin\Debug\Rhetos.Security.Interfaces.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Utilities\bin\Debug\Rhetos.Utilities.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Web\bin\Debug\Rhetos.Web.??? || GOTO Error1
 
 @Goto Done
 

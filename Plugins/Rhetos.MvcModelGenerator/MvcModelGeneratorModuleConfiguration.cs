@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,6 +16,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 using Autofac;
 using Rhetos.Dsl;
 using System.ComponentModel.Composition;
@@ -32,7 +33,12 @@ namespace Rhetos.MvcModelGenerator
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<CaptionsValueGenerator>().As<ICaptionsProvider>();
+            builder.RegisterType<CaptionsInitialCodePlugin>();
+
             Rhetos.Extensibility.PluginsUtility.RegisterPlugins<IMvcModelGeneratorPlugin>(builder);
+            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<ICaptionsResourceGeneratorPlugin>(builder);
+            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<ICaptionsValuePlugin>(builder);
 
             base.Load(builder);
         }

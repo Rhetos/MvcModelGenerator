@@ -19,10 +19,18 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using System.Collections.Generic;
 
 namespace Rhetos.MvcModelGenerator
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    public interface ICaptionsValuePlugin
     {
+        /// <summary>
+        /// Defines plugin priority.
+        /// The plugins that implement the same concept will be executed in specified order.
+        /// </summary>
+        double Order { get; }
+
+        void UpdateCaption(IDslModel dslModel, IDictionary<string, string> captionsValue);
     }
 }

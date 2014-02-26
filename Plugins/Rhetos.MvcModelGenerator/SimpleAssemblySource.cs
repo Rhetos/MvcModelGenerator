@@ -18,11 +18,16 @@
 */
 
 using Rhetos.Compiler;
-using Rhetos.Dsl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Rhetos.MvcModelGenerator
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    class SimpleAssemblySource : IAssemblySource
     {
+        public string GeneratedCode { get; set; }
+        public IEnumerable<string> RegisteredReferences { get; set; }
     }
 }

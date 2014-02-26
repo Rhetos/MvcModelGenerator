@@ -59,14 +59,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MvcPropertyHelper.cs" />
+    <Compile Include="Captions\CamelCaseCaption.cs" />
+    <Compile Include="Captions\PropertyCaption.cs" />
+    <Compile Include="Captions\DataStructureCaption.cs" />
+    <Compile Include="OverridableAttribute.cs" />
+    <Compile Include="PropertyCodeGeneratorHelper.cs" />
+    <Compile Include="Property\ShortStringPropertyCodeGenerator.cs" />
+    <Compile Include="Property\LongStringPropertyCodeGenerator.cs" />
+    <Compile Include="Property\DatePropertyCodeGenerator.cs" />
+    <Compile Include="Property\DecimalPropertyCodeGenerator.cs" />
     <Compile Include="Property\ReferencePropertyCodeGenerator.cs" />
-    <Compile Include="Tags\RegExTagCodeGenerator.cs" />
-    <Compile Include="Tags\MinValueTagCodeGenerator.cs" />
-    <Compile Include="Tags\MaxValueTagCodeGenerator.cs" />
-    <Compile Include="Tags\MaxLengthTagCodeGenerator.cs" />
-    <Compile Include="Tags\MinLengthTagCodeGenerator.cs" />
-    <Compile Include="Tags\RequiredTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\AutoCodePropertyCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\ActiveBoolDefaultCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\HideIdFieldsCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\ReferenceDetailCodeGenerator.cs" />
+    <Compile Include="SimpleOverridableAttribute.cs" />
+    <Compile Include="SimpleBusinessLogic\RegExTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\MinValueTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\MaxValueTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\MaxLengthTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\MinLengthTagCodeGenerator.cs" />
+    <Compile Include="SimpleBusinessLogic\RequiredTagCodeGenerator.cs" />
     <Compile Include="Property\SimplePropertyCodeGenerator.cs" />
     <Compile Include="DataStructureCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

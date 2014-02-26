@@ -19,10 +19,24 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(RequiredPropertyInfo))]
+    public class RequiredTagCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static SimpleOverridableAttribute _overridableAttribute = new SimpleOverridableAttribute("Required", false);
+
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (RequiredPropertyInfo)conceptInfo;
+
+            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
+                _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, "");
+        }
     }
 }

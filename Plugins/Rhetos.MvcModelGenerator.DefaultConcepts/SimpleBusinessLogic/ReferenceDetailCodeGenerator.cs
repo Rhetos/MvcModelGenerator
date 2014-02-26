@@ -23,17 +23,20 @@ using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
 using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator.DefaultConcepts
+namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(ReferencePropertyInfo))]
-    public class ReferencePropertyCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(ReferenceDetailInfo))]
+    public class ReferenceDetailCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static SimpleOverridableAttribute _renderModeAttribute = new SimpleOverridableAttribute("Rhetos.Mvc.RenderMode", true);
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            ReferencePropertyInfo info = (ReferencePropertyInfo)conceptInfo;
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
+            var info = (ReferenceDetailInfo)conceptInfo;
+
+            if (DataStructureCodeGenerator.IsSupported(info.Reference.DataStructure))
+                _renderModeAttribute.InsertOrOverrideAttribute(codeBuilder, info.Reference, @"Rhetos.Mvc.RenderMode.None");
         }
     }
 }

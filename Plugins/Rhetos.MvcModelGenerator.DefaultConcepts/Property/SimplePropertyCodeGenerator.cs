@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,15 +16,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Xml;
+
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
-using Rhetos.MvcModelGenerator;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
@@ -32,28 +32,35 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
     [ExportMetadata(MefProvider.Implements, typeof(PropertyInfo))]
     public class SimplePropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
+        private static IDictionary<Type, string> supportedPropertyTypes = new Dictionary<Type, string>
+        {
+            { typeof(BinaryPropertyInfo), "byte[]" },
+            { typeof(BoolPropertyInfo), "bool?" },
+            { typeof(DatePropertyInfo), "DateTime?" },
+            { typeof(DateTimePropertyInfo), "DateTime?" },
+            { typeof(DecimalPropertyInfo), "decimal?" },
+            { typeof(GuidPropertyInfo), "Guid?" },
+            { typeof(IntegerPropertyInfo), "int?" },
+            { typeof(LongStringPropertyInfo), "string" },
+            { typeof(MoneyPropertyInfo), "decimal?" },
+            { typeof(ShortStringPropertyInfo), "string" },
+        };
 
         private static string GetPropertyType(PropertyInfo conceptInfo)
         {
-            if (conceptInfo is IntegerPropertyInfo) return "int?";
-            if (conceptInfo is BinaryPropertyInfo) return "byte[]";
-            if (conceptInfo is BoolPropertyInfo) return "bool?";
-            if (conceptInfo is DatePropertyInfo || conceptInfo is DateTimePropertyInfo) return "DateTime?";
-            if (conceptInfo is MoneyPropertyInfo || conceptInfo is DecimalPropertyInfo) return "decimal?";
-            if (conceptInfo is GuidPropertyInfo) return "Guid?";
-            if (conceptInfo is ShortStringPropertyInfo || conceptInfo is LongStringPropertyInfo) return "string";
-            return null;
+            return supportedPropertyTypes
+                .Where(prop => prop.Key.IsAssignableFrom(conceptInfo.GetType()))
+                .Select(prop => prop.Value)
+                .FirstOrDefault();
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             PropertyInfo info = (PropertyInfo)conceptInfo;
             string propertyType = GetPropertyType(info);
-            if (!String.IsNullOrEmpty(propertyType) && DataStructureCodeGenerator.IsTypeSupported(info.DataStructure))
-            {
-                MvcPropertyHelper.GenerateCodeForType(info, codeBuilder, propertyType);
-            }
-        }
 
+            if (!String.IsNullOrEmpty(propertyType) && DataStructureCodeGenerator.IsSupported(info.DataStructure))
+                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, propertyType);
+        }
     }
 }

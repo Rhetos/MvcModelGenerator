@@ -26,14 +26,18 @@ using System.ComponentModel.Composition;
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(ReferencePropertyInfo))]
-    public class ReferencePropertyCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(MinLengthInfo))]
+    public class MinLengthTagCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static OverridableAttribute<int> _overridableAttribute = new OverridableAttribute<int>(
+            "MinLength", (oldValue, newValue) => newValue > oldValue);
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            ReferencePropertyInfo info = (ReferencePropertyInfo)conceptInfo;
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
+            var info = (MinLengthInfo)conceptInfo;
+
+            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
+                _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, int.Parse(info.Length), info.Length);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,6 +16,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,8 @@ using System.Text;
 
 namespace Rhetos.MvcModelGenerator
 {
-    public static class MvcModelGeneratorTags
+    public interface ICaptionsProvider
     {
-        public const string Using = "/*using*/";
-        public const string ModuleMembers = "/*implementation*/";
-        public const string NamespaceMembers = "/*body*/";
+        IDictionary<string, string> Captions { get; }
     }
 }

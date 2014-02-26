@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright (C) 2013 Omega software d.o.o.
+    Copyright (C) 2014 Omega software d.o.o.
 
     This file is part of Rhetos.
 
@@ -16,6 +16,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 using Rhetos.Compiler;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
@@ -26,6 +27,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ICodeGenerator = Rhetos.Compiler.ICodeGenerator;
 
@@ -36,10 +38,9 @@ namespace Rhetos.MvcModelGenerator
     {
         private readonly IPluginsContainer<IMvcModelGeneratorPlugin> _plugins;
         private readonly ICodeGenerator _codeGenerator;
-        private readonly IAssemblyGenerator _assemblyGenerator;
         private readonly ILogger _logger;
         private readonly ILogger _sourceLogger;
-        private string assemblyName = "MvcModel";
+        public const string AssemblyName = "Rhetos.Mvc";
 
         public MvcModelGenerator(
             IPluginsContainer<IMvcModelGeneratorPlugin> plugins,
@@ -50,24 +51,40 @@ namespace Rhetos.MvcModelGenerator
         {
             _plugins = plugins;
             _codeGenerator = codeGenerator;
-            _assemblyGenerator = assemblyGenerator;
 
             _logger = logProvider.GetLogger("MvcModelGenerator");
-            _sourceLogger = logProvider.GetLogger("Mvc Model source");
+            _sourceLogger = logProvider.GetLogger("MvcModelGenerator source");
         }
+
+        const string detectLineTag = @"\n\s*/\*.*?\*/\s*\r?\n";
+        const string detectTag = @"/\*.*?\*/";
 
         public void Generate()
         {
-            IAssemblySource assemblySource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", new InitialCodeGenerator());
+            SimpleAssemblySource assemblySource = GenerateSource();
             _logger.Trace("References: " + string.Join(", ", assemblySource.RegisteredReferences));
             _sourceLogger.Trace(assemblySource.GeneratedCode);
 
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", assemblyName + ".cs"), assemblySource.GeneratedCode);
+            assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
+            assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
+
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", AssemblyName + ".cs"), assemblySource.GeneratedCode);
+        }
+
+        private SimpleAssemblySource GenerateSource()
+        {
+            IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", new MvcModelInitialCodeGenerator());
+            SimpleAssemblySource assemblySource = new SimpleAssemblySource
+            {
+                GeneratedCode = generatedSource.GeneratedCode,
+                RegisteredReferences = generatedSource.RegisteredReferences
+            };
+            return assemblySource;
         }
 
         public IEnumerable<string> Dependencies
         {
-            get { return new []{""}; }
+            get { return null; }
         }
     }
 }

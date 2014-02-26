@@ -19,10 +19,24 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(LongStringPropertyInfo))]
+    public class LongStringPropertyCodeGenerator : IMvcModelGeneratorPlugin
     {
+        static SimpleOverridableAttribute _hintAttribute = new SimpleOverridableAttribute("UIHint", false);
+
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (LongStringPropertyInfo)conceptInfo;
+
+            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
+                _hintAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"""StringMultiline""");
+        }
     }
 }
