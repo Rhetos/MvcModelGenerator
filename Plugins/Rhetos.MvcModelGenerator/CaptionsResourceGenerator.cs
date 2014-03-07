@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Resources.Tools;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Rhetos.MvcModelGenerator
@@ -102,7 +103,7 @@ namespace Rhetos.MvcModelGenerator
 
             string resxContext = generatedSource.GeneratedCode;
             resxContext = CleanupXml(resxContext);
-            File.WriteAllText(ResourcesFilePath, resxContext);
+            File.WriteAllText(ResourcesFilePath, resxContext, Encoding.UTF8);
         }
 
         const string detectLineTag = @"\n\s*<!--.*?-->\s*\r?\n";
