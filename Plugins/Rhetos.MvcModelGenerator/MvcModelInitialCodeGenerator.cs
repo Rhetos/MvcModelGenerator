@@ -21,33 +21,34 @@ using System;
 using System.Configuration;
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using System.ComponentModel.Composition;
+using Rhetos.Extensibility;
 
 namespace Rhetos.MvcModelGenerator
 {
     public class MvcModelInitialCodeGenerator : IMvcModelGeneratorPlugin
     {
         public const string UsingTag = "/*using*/";
-        public const string ModuleMembersTag = "/*implementation*/";
-        public const string NamespaceMembersTag = "/*body*/";
         
-        public const string RhetosMvcNamespace = "Rhetos.Mvc";
-
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             codeBuilder.InsertCode(CodeSnippet);
 
+            codeBuilder.AddReference(CaptionsResourceGenerator.ResourcesAssemblyDllPath);
             codeBuilder.AddReferencesFromDependency(typeof(Guid));
             codeBuilder.AddReferencesFromDependency(typeof(System.Linq.Enumerable));
+            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DefaultValueAttribute)); // using namespace System.ComponentModel
+            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)); // using namespace System.ComponentModel.DataAnnotations
         }
 
         private string CodeSnippet =
 @"
 using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 " + UsingTag + @"
 
 /*
@@ -68,151 +69,6 @@ using System.Web.Mvc;
         }
     }
 */
-
-namespace " + RhetosMvcNamespace + @"
-{
-
-    public partial class BaseMvcModel
-    {
-         public Guid ID { get; set; }
-    }
-
-    " + NamespaceMembersTag + @"
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MinValueIntegerAttribute : ValidationAttribute
-    {
-        public string MinValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return Convert.ToInt32(value) >= Convert.ToInt32(MinValue);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed  partial class MinValueDecimalAttribute : ValidationAttribute
-    {
-        public string MinValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return  Convert.ToDecimal(value) >= Convert.ToDecimal(MinValue);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MinValueDateTimeAttribute : ValidationAttribute
-    {
-        public string MinValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return Convert.ToDateTime(value) >= Convert.ToDateTime(MinValue);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MaxValueIntegerAttribute : ValidationAttribute
-    {
-        public string MaxValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return Convert.ToInt32(value) <= Convert.ToInt32(MaxValue);
-        }
-    }
-    
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MaxValueDecimalAttribute : ValidationAttribute
-    {
-        public string MaxValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return Convert.ToDecimal(value) <= Convert.ToDecimal(MaxValue);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MaxValueDateTimeAttribute : ValidationAttribute
-    {
-        public string MaxValue { get; set; }
-
-        public override bool IsValid(object value)
-        {
-            return Convert.ToDateTime(value) <= Convert.ToDateTime(MaxValue);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class RenderModeAttribute : Attribute
-    {
-        private RenderMode _renderMode = RenderMode.Any;
-        public RenderMode RenderMode { 
-            get{
-                return _renderMode;   
-            }
-            set {
-                _renderMode = value;
-            }
-        }
-
-        public RenderModeAttribute(RenderMode renderMode)
-        {
-            _renderMode = renderMode;
-        }
-    }
-
-    public enum RenderMode
-    {
-        Any,
-        EditModeOnly,
-        DisplayModeOnly,
-        None
-    }
-
-    public enum LookupType
-    {
-        DropDown,
-        AutoComplete,
-        ComboBox
-    }
-
-    public sealed class LocalizedDisplayNameAttribute : DisplayNameAttribute
-    {
-        private readonly PropertyInfo resourceProperty;
-
-        public LocalizedDisplayNameAttribute(string displayNameKey, Type resourceType = null)
-            : base(displayNameKey)
-        {
-            if (resourceType != null)
-                resourceProperty = resourceType.GetProperty(displayNameKey, BindingFlags.Static | BindingFlags.Public);
-        }
-
-        public override string DisplayName
-        {
-            get
-            {
-                if (resourceProperty == null)
-                    return base.DisplayName;
-
-                try
-                {
-                    return (string)resourceProperty.GetValue(null);
-                }
-                catch (System.Reflection.TargetInvocationException ex)
-                {
-                    if (ex.InnerException is System.Resources.MissingManifestResourceException)
-                        throw ex.InnerException;
-                    throw;
-                }
-            }
-        }
-    }
-}
-
-" + ModuleMembersTag + @"
 
 ";
     }

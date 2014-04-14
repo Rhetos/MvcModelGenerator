@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -81,9 +82,7 @@
     <Compile Include="IMvcModelGeneratorPlugin.cs" />
     <Compile Include="MvcModelGeneratorModuleConfiguration.cs" />
     <Compile Include="MvcModelGenerator.cs" />
-    <Compile Include="MvcModelInitialCodeGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="MvcModelInitialCodeGenerator.cs" />
     <Compile Include="SimpleAssemblySource.cs" />
   </ItemGroup>
   <ItemGroup>

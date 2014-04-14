@@ -62,6 +62,9 @@
     <Compile Include="Captions\CamelCaseCaption.cs" />
     <Compile Include="Captions\PropertyCaption.cs" />
     <Compile Include="Captions\DataStructureCaption.cs" />
+    <Compile Include="DataStructures\WriteCodeGenerator.cs" />
+    <Compile Include="DataStructures\WritableOrmDataStructureCodeGenerator.cs" />
+    <Compile Include="DataStructures\ReadableDataStructureCodeGenerator.cs" />
     <Compile Include="OverridableAttribute.cs" />
     <Compile Include="PropertyCodeGeneratorHelper.cs" />
     <Compile Include="Property\ShortStringPropertyCodeGenerator.cs" />
@@ -81,13 +84,17 @@
     <Compile Include="SimpleBusinessLogic\MinLengthTagCodeGenerator.cs" />
     <Compile Include="SimpleBusinessLogic\RequiredTagCodeGenerator.cs" />
     <Compile Include="Property\SimplePropertyCodeGenerator.cs" />
-    <Compile Include="DataStructureCodeGenerator.cs" />
+    <Compile Include="DataStructures\DataStructureCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rhetos.Mvc.Client\Rhetos.Mvc.Client.csproj">
+      <Project>{5c503e29-4a61-4f02-a9fd-e9c574902bc4}</Project>
+      <Name>Rhetos.Mvc.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rhetos.MvcModelGenerator\Rhetos.MvcModelGenerator.csproj">
       <Project>{96f36fda-7af3-4ffc-8015-aa283337fd74}</Project>
       <Name>Rhetos.MvcModelGenerator</Name>

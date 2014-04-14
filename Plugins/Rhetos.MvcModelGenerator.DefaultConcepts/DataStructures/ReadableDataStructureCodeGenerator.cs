@@ -27,11 +27,9 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
     [ExportMetadata(MefProvider.Implements, typeof(DataStructureInfo))]
-    public class DataStructureCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.DependsOn, typeof(DataStructureCodeGenerator))]
+    public class ReadableDataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public static readonly CsTag<DataStructureInfo> PropertiesTag = "Properties";
-        public static readonly CsTag<DataStructureInfo> AttributesTag = "Attributes";
-
         public static bool IsSupported(DataStructureInfo conceptInfo)
         {
             return conceptInfo is EntityInfo
@@ -40,48 +38,17 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
                 || conceptInfo is LegacyEntityWithAutoCreatedViewInfo
                 || conceptInfo is SqlQueryableInfo
                 || conceptInfo is QueryableExtensionInfo
-                || conceptInfo is ComputedInfo
-                || conceptInfo is ActionInfo;
+                || conceptInfo is ComputedInfo;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            DataStructureInfo info = (DataStructureInfo)conceptInfo;
+            var info = (DataStructureInfo)conceptInfo;
 
             if (IsSupported(info))
-            {
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info), MvcModelInitialCodeGenerator.ModuleMembersTag);
-                _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, AttributeProperties(info));
-            }
-        }
-
-        private static string ImplementationCodeSnippet(DataStructureInfo info)
-        {
-            return string.Format(@"
-namespace Rhetos.Mvc.{0}
-{{
-    {3}
-    public partial class {1} : Rhetos.Mvc.BaseMvcModel
-    {{
-        public const string Entity{1} = ""{1}"";
-
-        {2}
-    }}
-}}
-",
-                info.Module.Name,
-                info.Name,
-                PropertiesTag.Evaluate(info),
-                AttributesTag.Evaluate(info));
-        }
-
-        static SimpleOverridableDataStructureAttribute _localizedDisplayAttribute = new SimpleOverridableDataStructureAttribute("Rhetos.Mvc.LocalizedDisplayName", false);
-
-        static string AttributeProperties(DataStructureInfo info)
-        {
-            return string.Format(@"""{0}"", typeof({1})",
-                DataStructureCaption.GetCaptionResourceKey(info),
-                Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName);
+                codeBuilder.InsertCode(
+                    "[Rhetos.Mvc.ReadableDataStructure]\r\n    ",
+                    DataStructureCodeGenerator.AttributesTag, info);
         }
     }
 }

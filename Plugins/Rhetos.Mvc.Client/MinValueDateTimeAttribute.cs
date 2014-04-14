@@ -17,26 +17,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
-using Rhetos.Dsl;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.Mvc
 {
-    /// <summary>
-    /// Plugins that implement this interface generate default caption values for data structures,
-    /// properties and other concepts.
-    /// The default captions are compiled into the resource file and dll during deployment.
-    /// Culture-specific resource file should be used to override the generated default captions.
-    /// </summary>
-    public interface ICaptionsValuePlugin
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed partial class MinValueDateTimeAttribute : ValidationAttribute
     {
-        /// <summary>
-        /// Defines plugin priority.
-        /// The plugins that implement the same concept will be executed in specified order.
-        /// </summary>
-        double Order { get; }
+        public string MinValue { get; set; }
 
-        void UpdateCaption(IDslModel dslModel, IDictionary<string, string> captionsValue);
+        public override bool IsValid(object value)
+        {
+            return Convert.ToDateTime(value) >= Convert.ToDateTime(MinValue);
+        }
     }
 }

@@ -118,11 +118,13 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 
         private string AttributeSnippet(TConceptType conceptInfo, string attributeParameters, bool commented = false)
         {
-            return string.Format(@"{0}[{1}({2})]
-        ",
+            int sourceAlignment = conceptInfo is PropertyInfo ? 8 : 4;
+
+            return string.Format("{0}[{1}({2})]\r\n{3}",
                 commented ? "//" : _overrideOldAttributeTag.Evaluate(conceptInfo),
                 _attributeName,
-                attributeParameters);
+                attributeParameters,
+                new string(' ', sourceAlignment));
         }
     }
 }

@@ -29,14 +29,14 @@ using System.Text;
 
 namespace Rhetos.MvcModelGenerator
 {
-    public class CaptionsValueGenerator : ICaptionsProvider
+    public class CaptionsValueProvider : ICaptionsProvider
     {
         private readonly IDslModel _dslModel;
         private readonly IPluginsContainer<ICaptionsValuePlugin> _plugins;
         private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
 
-        public CaptionsValueGenerator(
+        public CaptionsValueProvider(
             IDslModel dslModel,
             IPluginsContainer<ICaptionsValuePlugin> plugins,
             ILogProvider logProvider)

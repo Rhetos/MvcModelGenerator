@@ -17,26 +17,26 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
-using Rhetos.Dsl;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.Mvc
 {
-    /// <summary>
-    /// Plugins that implement this interface generate default caption values for data structures,
-    /// properties and other concepts.
-    /// The default captions are compiled into the resource file and dll during deployment.
-    /// Culture-specific resource file should be used to override the generated default captions.
-    /// </summary>
-    public interface ICaptionsValuePlugin
+    public enum LookupType
     {
-        /// <summary>
-        /// Defines plugin priority.
-        /// The plugins that implement the same concept will be executed in specified order.
-        /// </summary>
-        double Order { get; }
+        DropDown,
+        AutoComplete,
+        ComboBox
+    }
 
-        void UpdateCaption(IDslModel dslModel, IDictionary<string, string> captionsValue);
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed partial class LookupAttribute : Attribute
+    {
+        public string LookupTextField { get; set; }
+        public string LookupEntity { get; set; }
+        public string[] LookupColumns { get; set; }
+        public LookupType LookupType { get; set; }
     }
 }

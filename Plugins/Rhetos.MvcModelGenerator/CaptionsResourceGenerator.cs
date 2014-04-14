@@ -66,7 +66,7 @@ namespace Rhetos.MvcModelGenerator
         public static string ResourcesFileName { get { return "Captions.resx"; } }
         public static string ResourcesFilePath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesFileName); } }
         public static string CompiledResourcesFilePath { get { return Path.ChangeExtension(ResourcesFilePath, "resources"); } }
-        public static string ResourcesNamespaceName { get { return MvcModelInitialCodeGenerator.RhetosMvcNamespace; } }
+        public static string ResourcesNamespaceName { get { return "Rhetos.Mvc"; } }
         public static string ResourcesClassName { get { return "Captions"; } }
         public static string ResourcesClassFullName { get { return ResourcesNamespaceName + "." + ResourcesClassName; } }
         public static string ResourcesAssemblyDllPath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesAssemblyName + ".dll"); } }

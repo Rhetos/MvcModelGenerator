@@ -20,10 +20,12 @@
 using Rhetos.Compiler;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
+using Rhetos.Utilities;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,22 +40,21 @@ namespace Rhetos.MvcModelGenerator
     {
         private readonly IPluginsContainer<IMvcModelGeneratorPlugin> _plugins;
         private readonly ICodeGenerator _codeGenerator;
-        private readonly ILogger _logger;
-        private readonly ILogger _sourceLogger;
+        private readonly IAssemblyGenerator _assemblyGenerator;
+        private readonly ILogger _performanceLogger;
         public const string AssemblyName = "Rhetos.Mvc";
 
         public MvcModelGenerator(
             IPluginsContainer<IMvcModelGeneratorPlugin> plugins,
             ICodeGenerator codeGenerator,
-            ILogProvider logProvider,
-            IAssemblyGenerator assemblyGenerator
+            IAssemblyGenerator assemblyGenerator,
+            ILogProvider logProvider
         )
         {
             _plugins = plugins;
             _codeGenerator = codeGenerator;
-
-            _logger = logProvider.GetLogger("MvcModelGenerator");
-            _sourceLogger = logProvider.GetLogger("MvcModelGenerator source");
+            _assemblyGenerator = assemblyGenerator;
+            _performanceLogger = logProvider.GetLogger("Performance");
         }
 
         const string detectLineTag = @"\n\s*/\*.*?\*/\s*\r?\n";
@@ -61,14 +62,19 @@ namespace Rhetos.MvcModelGenerator
 
         public void Generate()
         {
+            var sw = Stopwatch.StartNew();
             SimpleAssemblySource assemblySource = GenerateSource();
-            _logger.Trace("References: " + string.Join(", ", assemblySource.RegisteredReferences));
-            _sourceLogger.Trace(assemblySource.GeneratedCode);
 
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
 
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", AssemblyName + ".cs"), assemblySource.GeneratedCode);
+            _assemblyGenerator.Generate(assemblySource, new CompilerParameters
+                {
+                    OutputAssembly = Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"),
+                    IncludeDebugInformation = true
+                });
+
+            _performanceLogger.Write(sw, "MvcModelGenerator.Generate");
         }
 
         private SimpleAssemblySource GenerateSource()
@@ -84,7 +90,7 @@ namespace Rhetos.MvcModelGenerator
 
         public IEnumerable<string> Dependencies
         {
-            get { return null; }
+            get { return new[] { typeof(CaptionsResourceGenerator).FullName }; }
         }
     }
 }

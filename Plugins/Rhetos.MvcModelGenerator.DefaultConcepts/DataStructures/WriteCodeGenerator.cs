@@ -19,24 +19,24 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
-using System.Collections.Generic;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    /// <summary>
-    /// Plugins that implement this interface generate default caption values for data structures,
-    /// properties and other concepts.
-    /// The default captions are compiled into the resource file and dll during deployment.
-    /// Culture-specific resource file should be used to override the generated default captions.
-    /// </summary>
-    public interface ICaptionsValuePlugin
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(WriteInfo))]
+    public class WriteCodeGenerator : IMvcModelGeneratorPlugin
     {
-        /// <summary>
-        /// Defines plugin priority.
-        /// The plugins that implement the same concept will be executed in specified order.
-        /// </summary>
-        double Order { get; }
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (WriteInfo)conceptInfo;
 
-        void UpdateCaption(IDslModel dslModel, IDictionary<string, string> captionsValue);
+            if (info is IWritableOrmDataStructure)
+                codeBuilder.InsertCode(
+                    "[Rhetos.Mvc.WritableDataStructure]\r\n    ",
+                    DataStructureCodeGenerator.AttributesTag, info.DataStructure);
+        }
     }
 }

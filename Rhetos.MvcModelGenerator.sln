@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.MvcModelGenerator.DefaultConcepts", "Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\Rhetos.MvcModelGenerator.DefaultConcepts.csproj", "{E09D82F2-6148-4E3F-93D7-2047503276AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.MvcModelGenerator", "Plugins\Rhetos.MvcModelGenerator\Rhetos.MvcModelGenerator.csproj", "{96F36FDA-7AF3-4FFC-8015-AA283337FD74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.Mvc.Client", "Plugins\Rhetos.Mvc.Client\Rhetos.Mvc.Client.csproj", "{5C503E29-4A61-4F02-A9FD-E9C574902BC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +23,10 @@ Global
 		{96F36FDA-7AF3-4FFC-8015-AA283337FD74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96F36FDA-7AF3-4FFC-8015-AA283337FD74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96F36FDA-7AF3-4FFC-8015-AA283337FD74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

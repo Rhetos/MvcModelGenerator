@@ -33,7 +33,7 @@ namespace Rhetos.MvcModelGenerator
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<CaptionsValueGenerator>().As<ICaptionsProvider>();
+            builder.RegisterType<CaptionsValueProvider>().As<ICaptionsProvider>();
             builder.RegisterType<CaptionsInitialCodePlugin>();
 
             Rhetos.Extensibility.PluginsUtility.RegisterPlugins<IMvcModelGeneratorPlugin>(builder);
