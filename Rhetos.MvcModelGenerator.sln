@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.MvcModelGenerator", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.Mvc.Client", "Plugins\Rhetos.Mvc.Client\Rhetos.Mvc.Client.csproj", "{5C503E29-4A61-4F02-A9FD-E9C574902BC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhetos.MvcModelGenerator.Test", "Plugins\Rhetos.MvcModelGenerator.Test\Rhetos.MvcModelGenerator.Test.csproj", "{23B72F4A-0BE5-41D6-9EEE-A84CF3C01DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C503E29-4A61-4F02-A9FD-E9C574902BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B72F4A-0BE5-41D6-9EEE-A84CF3C01DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B72F4A-0BE5-41D6-9EEE-A84CF3C01DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B72F4A-0BE5-41D6-9EEE-A84CF3C01DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B72F4A-0BE5-41D6-9EEE-A84CF3C01DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

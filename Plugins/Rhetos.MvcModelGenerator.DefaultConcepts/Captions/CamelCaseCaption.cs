@@ -43,14 +43,28 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
             foreach (var captionKey in captionsKeys)
             {
                 StringBuilder sb = new StringBuilder();
+                string caption = captionsValue[captionKey];
 
-                var field = captionsValue[captionKey].ToCharArray();
-                sb.Append(field[0]);
-                for (int i = 1; i < field.Length; i++)
+                if (caption.All(c => char.IsUpper(c)))
+                    continue;
+
+                bool lastWasLetter = false;
+                foreach (char c in caption)
                 {
-                    if (field[i] == '_') { sb.Append(' '); continue; }
-                    if (char.IsUpper(field[i]) && char.IsLower(field[i - 1])) sb.Append(' ');
-                    sb.Append(char.ToLower(field[i]));
+                    if (lastWasLetter && char.IsUpper(c))
+                    {
+                        sb.Append(' ');
+                        sb.Append(char.ToLower(c));
+                    }
+                    else if (c == '_')
+                    {
+                        if (lastWasLetter)
+                            sb.Append(' ');
+                    }
+                    else
+                        sb.Append(c);
+
+                    lastWasLetter = char.IsLetter(c);
                 }
 
                 captionsValue[captionKey] = sb.ToString();
