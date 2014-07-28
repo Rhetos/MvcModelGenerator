@@ -41,7 +41,20 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
                 || conceptInfo is SqlQueryableInfo
                 || conceptInfo is QueryableExtensionInfo
                 || conceptInfo is ComputedInfo
-                || conceptInfo is ActionInfo;
+                || conceptInfo is ActionInfo
+                || conceptInfo is ReportDataInfo;
+        }
+
+        public static bool IsEntityType(DataStructureInfo conceptInfo)
+        {
+            return conceptInfo is EntityInfo
+                || conceptInfo is BrowseDataStructureInfo
+                || conceptInfo is LegacyEntityInfo
+                || conceptInfo is LegacyEntityWithAutoCreatedViewInfo
+                || conceptInfo is SqlQueryableInfo
+                || conceptInfo is QueryableExtensionInfo
+                || conceptInfo is ComputedInfo
+                || conceptInfo is ActionInfo; // TODO: Remove ActionInfo. It is here only for backward compatibility.
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
@@ -53,7 +66,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
                 codeBuilder.InsertCode(ImplementationCodeSnippet(info));
                 codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Mvc.BaseMvcModel));
 
-                _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, AttributeProperties(info));
+                _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
             }
         }
 
@@ -63,7 +76,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 namespace Rhetos.Mvc.{0}
 {{
     {3}
-    public partial class {1} : Rhetos.Mvc.BaseMvcModel
+    public partial class {1}{4}
     {{
         public const string Entity{1} = ""{1}"";
 
@@ -74,12 +87,13 @@ namespace Rhetos.Mvc.{0}
                 info.Module.Name,
                 info.Name,
                 PropertiesTag.Evaluate(info),
-                AttributesTag.Evaluate(info));
+                AttributesTag.Evaluate(info),
+                IsEntityType(info) ? " : Rhetos.Mvc.BaseMvcModel" : "");
         }
 
         static SimpleOverridableDataStructureAttribute _localizedDisplayAttribute = new SimpleOverridableDataStructureAttribute("Rhetos.Mvc.LocalizedDisplayName", false);
 
-        static string AttributeProperties(DataStructureInfo info)
+        static string LocalizedDisplayAttributeProperties(DataStructureInfo info)
         {
             return string.Format(@"""{0}"", typeof({1})",
                 DataStructureCaption.GetCaptionResourceKey(info),
