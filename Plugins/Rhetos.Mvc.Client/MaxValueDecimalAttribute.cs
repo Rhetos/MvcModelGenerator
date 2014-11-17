@@ -18,20 +18,20 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace Rhetos.Mvc
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MaxValueDecimalAttribute : ValidationAttribute
+    public class MaxValueDecimalAttribute : ValidationAttribute
     {
         public string MaxValue { get; set; }
 
         public override bool IsValid(object value)
         {
+            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
+                return true;
+
             return Convert.ToDecimal(value) <= Convert.ToDecimal(MaxValue);
         }
     }

@@ -18,20 +18,21 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace Rhetos.Mvc
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class MinValueIntegerAttribute : ValidationAttribute
+    public class MinValueIntegerAttribute : ValidationAttribute
     {
         public string MinValue { get; set; }
+        public bool AllowNullOrEmptyValue { get; set; }
 
         public override bool IsValid(object value)
         {
+            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
+                return true;
+
             return Convert.ToInt32(value) >= Convert.ToInt32(MinValue);
         }
     }
