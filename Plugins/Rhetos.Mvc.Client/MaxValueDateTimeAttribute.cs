@@ -26,14 +26,10 @@ namespace Rhetos.Mvc
     public class MaxValueDateTimeAttribute : ValidationAttribute
     {
         public string MaxValue { get; set; }
-        public bool AllowNullOrEmptyValue { get; set; }
 
         public override bool IsValid(object value)
         {
-            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
-                return true;
-
-            return Convert.ToDateTime(value) <= Convert.ToDateTime(MaxValue);
+            return value == null || Convert.ToDateTime(value) <= Convert.ToDateTime(MaxValue);
         }
     }
 }

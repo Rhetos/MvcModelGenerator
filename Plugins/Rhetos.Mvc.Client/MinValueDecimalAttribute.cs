@@ -26,14 +26,10 @@ namespace Rhetos.Mvc
     public class MinValueDecimalAttribute : ValidationAttribute
     {
         public string MinValue { get; set; }
-        public bool AllowNullOrEmptyValue { get; set; }
 
         public override bool IsValid(object value)
         {
-            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
-                return true;
-
-            return Convert.ToDecimal(value) >= Convert.ToDecimal(MinValue);
+            return value == null || Convert.ToDecimal(value) >= Convert.ToDecimal(MinValue);
         }
     }
 }

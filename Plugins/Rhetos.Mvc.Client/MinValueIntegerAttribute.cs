@@ -26,14 +26,10 @@ namespace Rhetos.Mvc
     public class MinValueIntegerAttribute : ValidationAttribute
     {
         public string MinValue { get; set; }
-        public bool AllowNullOrEmptyValue { get; set; }
 
         public override bool IsValid(object value)
         {
-            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
-                return true;
-
-            return Convert.ToInt32(value) >= Convert.ToInt32(MinValue);
+            return value == null || Convert.ToInt32(value) >= Convert.ToInt32(MinValue);
         }
     }
 }

@@ -29,10 +29,7 @@ namespace Rhetos.Mvc
 
         public override bool IsValid(object value)
         {
-            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
-                return true;
-
-            return Convert.ToDecimal(value) <= Convert.ToDecimal(MaxValue);
+            return value == null || Convert.ToDecimal(value) <= Convert.ToDecimal(MaxValue);
         }
     }
 }

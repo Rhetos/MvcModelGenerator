@@ -26,14 +26,10 @@ namespace Rhetos.Mvc
     public class MinValueDateTimeAttribute : ValidationAttribute
     {
         public string MinValue { get; set; }
-        public bool AllowNullOrEmptyValue { get; set; }
 
         public override bool IsValid(object value)
         {
-            if (AllowNullOrEmptyValue && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
-                return true;
-
-            return Convert.ToDateTime(value) >= Convert.ToDateTime(MinValue);
+            return value == null || Convert.ToDateTime(value) >= Convert.ToDateTime(MinValue);
         }
     }
 }
