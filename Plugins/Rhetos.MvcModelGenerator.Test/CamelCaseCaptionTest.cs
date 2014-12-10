@@ -37,6 +37,11 @@ namespace Rhetos.MvcModelGenerator.Test
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<IConceptInfo> FindByType(Type conceptType)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [TestClass]
