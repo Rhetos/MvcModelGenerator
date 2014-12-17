@@ -36,6 +36,7 @@ namespace Rhetos.Mvc
     {
         public string LookupTextField { get; set; }
         public string LookupEntity { get; set; }
+        public string LookupModule { get; set; }
         public string[] LookupColumns { get; set; }
         public LookupType LookupType { get; set; }
     }
