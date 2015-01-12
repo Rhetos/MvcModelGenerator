@@ -19,11 +19,25 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
+using System.Linq;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(DataStructureExtendsInfo))]
+    public class ExtendsDataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (DataStructureExtendsInfo)conceptInfo;
 
+            codeBuilder.InsertCode(
+                string.Format("[Rhetos.Mvc.Extends(typeof(Rhetos.Mvc.{0}.{1}))]\r\n    ",
+                    info.Base.Module.Name, info.Base.Name),
+                DataStructureCodeGenerator.AttributesTag, info.Extension);
+        }
     }
 }

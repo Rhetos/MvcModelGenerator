@@ -95,9 +95,8 @@ namespace Rhetos.Mvc.{0}
 
         static string LocalizedDisplayAttributeProperties(DataStructureInfo info)
         {
-            return string.Format(@"""{0}"", typeof({1})",
-                DataStructureCaption.GetCaptionResourceKey(info),
-                Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName);
+            return string.Format(@"""{0}"", typeof(CaptionsResourceClass)",
+                DataStructureCaption.GetCaptionResourceKey(info));
         }
     }
 }

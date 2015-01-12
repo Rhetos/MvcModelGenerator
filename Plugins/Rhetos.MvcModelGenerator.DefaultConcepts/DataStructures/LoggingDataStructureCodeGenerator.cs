@@ -19,11 +19,24 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
+using System.Linq;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(EntityLoggingInfo))]
+    public class LoggingDataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (EntityLoggingInfo)conceptInfo;
 
+            codeBuilder.InsertCode(
+                "[Rhetos.Mvc.HasLogging]\r\n    ",
+                DataStructureCodeGenerator.AttributesTag, info.Entity);
+        }
     }
 }

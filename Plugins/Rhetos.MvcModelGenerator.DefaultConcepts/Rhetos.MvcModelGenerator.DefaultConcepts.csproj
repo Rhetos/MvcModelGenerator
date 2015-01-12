@@ -62,6 +62,10 @@
     <Compile Include="Captions\CamelCaseCaption.cs" />
     <Compile Include="Captions\PropertyCaption.cs" />
     <Compile Include="Captions\DataStructureCaption.cs" />
+    <Compile Include="DataStructures\ExtendsDataStructureCodeGenerator.cs" />
+    <Compile Include="DataStructures\DeactivatableDataStructureCodeGenerator.cs" />
+    <Compile Include="DataStructures\HistoryDataStructureCodeGenerator.cs" />
+    <Compile Include="DataStructures\LoggingDataStructureCodeGenerator.cs" />
     <Compile Include="DataStructures\WriteCodeGenerator.cs" />
     <Compile Include="DataStructures\WritableOrmDataStructureCodeGenerator.cs" />
     <Compile Include="DataStructures\ReadableDataStructureCodeGenerator.cs" />

@@ -19,11 +19,25 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
+using System.Linq;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(DeactivatableInfo))]
+    public class DeactivatableDataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
 
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (DeactivatableInfo)conceptInfo;
+
+            codeBuilder.InsertCode(
+                "[Rhetos.Mvc.Deactivatable]\r\n    ",
+                DataStructureCodeGenerator.AttributesTag, info.Entity);
+        }
     }
 }
