@@ -17,12 +17,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
-using Rhetos.Dsl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Rhetos.MvcModelGenerator
+namespace Rhetos.Mvc
 {
-    public interface IMvcModelGeneratorPlugin : IConceptCodeGenerator
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public sealed partial class DeactivatableAttribute : Attribute
     {
 
     }

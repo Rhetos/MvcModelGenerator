@@ -41,8 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseMvcModel.cs" />
+    <Compile Include="DeactivatableAttribute.cs" />
+    <Compile Include="ExtendsAttribute.cs" />
+    <Compile Include="HasHistoryAttribute.cs" />
     <Compile Include="LocalizedDisplayNameAttribute.cs" />
-    <Compile Include="LookupAttribute.cs" />
+    <Compile Include="HasLoggingAttriibute.cs" />
     <Compile Include="MaxValueDateTimeAttribute.cs" />
     <Compile Include="MaxValueDecimalAttribute.cs" />
     <Compile Include="MaxValueIntegerAttribute.cs" />
@@ -53,7 +56,6 @@
     <Compile Include="WritableDataStructureAttribute.cs" />
     <Compile Include="RenderModeAttribute.cs" />
     <Compile Include="ReadableDataStructureAttribute.cs" />
-    <Compile Include="StyleAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -49,9 +49,8 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 
         static string DisplayAttributeParameters(PropertyInfo info)
         {
-            return string.Format(@"Name = ""{0}"", ResourceType = typeof({1}), AutoGenerateFilter = true",
-                PropertyCaption.GetCaptionResourceKey(info),
-                Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName);
+            return string.Format(@"Name = ""{0}"", ResourceType = typeof(CaptionsResourceClass), AutoGenerateFilter = true",
+                PropertyCaption.GetCaptionResourceKey(info));
         }
     }
 }

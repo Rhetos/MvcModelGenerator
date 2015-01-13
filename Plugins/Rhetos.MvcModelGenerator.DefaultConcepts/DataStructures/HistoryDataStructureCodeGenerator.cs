@@ -17,27 +17,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
-using System.Collections.Generic;
+using Rhetos.Compiler;
+using Rhetos.Dsl;
+using Rhetos.Dsl.DefaultConcepts;
+using Rhetos.Extensibility;
+using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 
-namespace Rhetos.Mvc
+namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
-    public enum LookupType
-    {
-        DropDown,
-        AutoComplete,
-        ComboBox
-    }
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(EntityHistoryInfo))]
 
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class LookupAttribute : Attribute
+    public class HistoryDataStructureCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public string LookupTextField { get; set; }
-        public string LookupEntity { get; set; }
-        public string LookupModule { get; set; }
-        public string[] LookupColumns { get; set; }
-        public LookupType LookupType { get; set; }
+
+        public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
+        {
+            var info = (EntityHistoryInfo)conceptInfo;
+
+            codeBuilder.InsertCode(
+                "[Rhetos.Mvc.HasHistory]\r\n    ",
+                DataStructureCodeGenerator.AttributesTag, info.Entity);
+        }
     }
 }
