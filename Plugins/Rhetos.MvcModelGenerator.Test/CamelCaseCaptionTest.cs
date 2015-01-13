@@ -42,6 +42,11 @@ namespace Rhetos.MvcModelGenerator.Test
         {
             throw new NotImplementedException();
         }
+
+        public T GetIndex<T>() where T : IDslModelIndex
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [TestClass]
