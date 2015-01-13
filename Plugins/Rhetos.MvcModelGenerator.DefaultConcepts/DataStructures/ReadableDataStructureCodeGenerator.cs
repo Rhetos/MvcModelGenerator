@@ -32,11 +32,8 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
     {
         public static bool IsSupported(DataStructureInfo conceptInfo)
         {
-            return conceptInfo is EntityInfo
+            return conceptInfo is IOrmDataStructure
                 || conceptInfo is BrowseDataStructureInfo
-                || conceptInfo is LegacyEntityInfo
-                || conceptInfo is LegacyEntityWithAutoCreatedViewInfo
-                || conceptInfo is SqlQueryableInfo
                 || conceptInfo is QueryableExtensionInfo
                 || conceptInfo is ComputedInfo;
         }
