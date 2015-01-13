@@ -24,9 +24,8 @@ using System.Text;
 
 namespace Rhetos.Mvc
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed partial class StyleAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public sealed partial class HasLoggingAttribute : Attribute
     {
-        public int Width { get; set; }
     }
 }

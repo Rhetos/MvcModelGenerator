@@ -79,7 +79,7 @@ namespace Rhetos.MvcModelGenerator
 
         private SimpleAssemblySource GenerateSource()
         {
-            IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", new MvcModelInitialCodeGenerator());
+            IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null);
             SimpleAssemblySource assemblySource = new SimpleAssemblySource
             {
                 GeneratedCode = generatedSource.GeneratedCode,

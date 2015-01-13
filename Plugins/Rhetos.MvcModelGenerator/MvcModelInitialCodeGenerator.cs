@@ -26,9 +26,12 @@ using Rhetos.Extensibility;
 
 namespace Rhetos.MvcModelGenerator
 {
+    [Export(typeof(IMvcModelGeneratorPlugin))]
+    [ExportMetadata(MefProvider.Implements, typeof(InitializationConcept))]
     public class MvcModelInitialCodeGenerator : IMvcModelGeneratorPlugin
     {
         public const string UsingTag = "/*using*/";
+        public const string OverrideCaptionsResourceClassTag = "/*OverrideCaptionsResourceClass*/";
         
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
@@ -49,6 +52,8 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using CaptionsResourceClass = " + OverrideCaptionsResourceClassTag + " " + Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName + @";
+
 " + UsingTag + @"
 
 /*
