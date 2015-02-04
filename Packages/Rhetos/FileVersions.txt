@@ -1,79 +1,89 @@
 ﻿
 
+Name          : Autofac.dll
+Length        : 203264
+LastWriteTime : 2015-01-30 14:02:06
+FileVersion   : 3.5.2.0
+
+Name          : Autofac.Integration.Wcf.dll
+Length        : 24576
+LastWriteTime : 2015-01-30 14:02:06
+FileVersion   : 3.0.1.0
+
 Name          : Rhetos.Compiler.dll
 Length        : 12800
-LastWriteTime : 2015-01-13 11:52:02
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:18
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Compiler.Interfaces.dll
 Length        : 12288
-LastWriteTime : 2015-01-13 11:52:02
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:18
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Dom.DefaultConcepts.Interfaces.dll
 Length        : 10240
-LastWriteTime : 2015-01-13 11:52:04
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:20
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Dsl.DefaultConcepts.dll
-Length        : 191488
-LastWriteTime : 2015-01-13 11:52:05
-FileVersion   : 0.9.22.0
+Length        : 190976
+LastWriteTime : 2015-02-04 11:34:21
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Dsl.Interfaces.dll
-Length        : 27136
-LastWriteTime : 2015-01-13 11:52:02
-FileVersion   : 0.9.22.0
+Length        : 27648
+LastWriteTime : 2015-02-04 11:34:18
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Extensibility.dll
-Length        : 25088
-LastWriteTime : 2015-01-13 11:52:02
-FileVersion   : 0.9.22.0
+Length        : 32256
+LastWriteTime : 2015-02-04 11:34:18
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Extensibility.Interfaces.dll
 Length        : 5632
-LastWriteTime : 2015-01-13 11:52:01
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:16
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Interfaces.dll
 Length        : 6656
-LastWriteTime : 2015-01-13 11:52:04
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:20
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Logging.dll
 Length        : 5120
-LastWriteTime : 2015-01-13 11:52:01
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:16
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Logging.Interfaces.dll
 Length        : 6656
-LastWriteTime : 2015-01-13 11:52:01
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:16
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Processing.DefaultCommands.Interfaces.dll
 Length        : 12800
-LastWriteTime : 2015-01-13 11:52:05
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:21
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Processing.Interfaces.dll
 Length        : 8192
-LastWriteTime : 2015-01-13 11:52:03
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:19
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Security.Interfaces.dll
 Length        : 6656
-LastWriteTime : 2015-01-13 11:52:04
-FileVersion   : 0.9.22.0
+LastWriteTime : 2015-02-04 11:34:20
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Utilities.dll
-Length        : 63488
-LastWriteTime : 2015-01-13 11:52:01
-FileVersion   : 0.9.22.0
+Length        : 64512
+LastWriteTime : 2015-02-04 11:34:17
+FileVersion   : 0.9.24.0
 
 Name          : Rhetos.Web.dll
-Length        : 8704
-LastWriteTime : 2015-01-13 11:52:02
-FileVersion   : 0.9.22.0
+Length        : 9216
+LastWriteTime : 2015-02-04 11:34:17
+FileVersion   : 0.9.24.0
 
 
 

@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\Packages\Autofac\Autofac.dll</HintPath>
+      <HintPath>..\..\Packages\Rhetos\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Rhetos.Compiler">
       <HintPath>..\..\Packages\Rhetos\Rhetos.Compiler.dll</HintPath>

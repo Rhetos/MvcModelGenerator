@@ -28,6 +28,9 @@ DEL /Q /F "*.pdb" || GOTO Error1
 @CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Utilities\bin\Debug\Rhetos.Utilities.??? || GOTO Error1
 @CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos.Web\bin\Debug\Rhetos.Web.??? || GOTO Error1
 
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos\bin\Autofac.??? || GOTO Error1
+@CALL :SafeCopy ..\..\..\..\Rhetos\Source\Rhetos\bin\Autofac.Integration.Wcf.??? || GOTO Error1
+
 @Goto Done
 
 :SafeCopy

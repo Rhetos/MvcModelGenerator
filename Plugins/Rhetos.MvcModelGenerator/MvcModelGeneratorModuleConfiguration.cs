@@ -36,9 +36,9 @@ namespace Rhetos.MvcModelGenerator
             builder.RegisterType<CaptionsValueProvider>().As<ICaptionsProvider>();
             builder.RegisterType<CaptionsInitialCodePlugin>();
 
-            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<IMvcModelGeneratorPlugin>(builder);
-            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<ICaptionsResourceGeneratorPlugin>(builder);
-            Rhetos.Extensibility.PluginsUtility.RegisterPlugins<ICaptionsValuePlugin>(builder);
+            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<IMvcModelGeneratorPlugin>(builder);
+            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<ICaptionsResourceGeneratorPlugin>(builder);
+            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<ICaptionsValuePlugin>(builder);
 
             base.Load(builder);
         }
