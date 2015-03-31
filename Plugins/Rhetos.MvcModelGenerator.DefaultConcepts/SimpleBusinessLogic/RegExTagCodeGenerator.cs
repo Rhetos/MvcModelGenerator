@@ -43,8 +43,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             var info = (RegExMatchInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
-                _regexAttrubute.InsertOrOverrideAttribute(codeBuilder, info.Property, AttrubuteParameters(info));
+            _regexAttrubute.InsertOrOverrideAttribute(codeBuilder, info.Property, AttrubuteParameters(info));
         }
     }
 }

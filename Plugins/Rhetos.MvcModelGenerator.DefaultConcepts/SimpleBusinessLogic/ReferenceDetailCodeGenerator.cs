@@ -35,8 +35,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
         {
             var info = (ReferenceDetailInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.Reference.DataStructure))
-                _renderModeAttribute.InsertOrOverrideAttribute(codeBuilder, info.Reference, @"Rhetos.Mvc.RenderMode.None");
+            _renderModeAttribute.InsertOrOverrideAttribute(codeBuilder, info.Reference, @"Rhetos.Mvc.RenderMode.None");
         }
     }
 }

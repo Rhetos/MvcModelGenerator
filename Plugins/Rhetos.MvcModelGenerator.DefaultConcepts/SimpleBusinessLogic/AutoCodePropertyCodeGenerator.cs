@@ -35,8 +35,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
         {
             var info = (AutoCodePropertyInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
-                _defaultAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, @"""+""");
+            _defaultAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, @"""+""");
         }
     }
 }

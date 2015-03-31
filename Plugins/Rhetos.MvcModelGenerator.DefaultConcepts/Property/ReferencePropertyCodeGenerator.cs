@@ -32,8 +32,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             ReferencePropertyInfo info = (ReferencePropertyInfo)conceptInfo;
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
+            PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, "Guid?", "ID");
         }
     }
 }

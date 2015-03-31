@@ -21,6 +21,7 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
 using Rhetos.Extensibility;
+using System;
 using System.ComponentModel.Composition;
 
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
@@ -32,14 +33,10 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         public static readonly CsTag<DataStructureInfo> PropertiesTag = "Properties";
         public static readonly CsTag<DataStructureInfo> AttributesTag = "Attributes";
 
+		[Obsolete]
         public static bool IsSupported(DataStructureInfo conceptInfo)
         {
-            return conceptInfo is IOrmDataStructure
-                || conceptInfo is BrowseDataStructureInfo
-                || conceptInfo is QueryableExtensionInfo
-                || conceptInfo is ComputedInfo
-                || conceptInfo is ActionInfo
-                || conceptInfo is ReportDataInfo;
+            return true;
         }
 
         public static bool IsEntityType(DataStructureInfo conceptInfo)
@@ -55,13 +52,10 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             DataStructureInfo info = (DataStructureInfo)conceptInfo;
 
-            if (IsSupported(info))
-            {
-                codeBuilder.InsertCode(ImplementationCodeSnippet(info));
-                codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Mvc.BaseMvcModel));
+            codeBuilder.InsertCode(ImplementationCodeSnippet(info));
+            codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Mvc.BaseMvcModel));
 
-                _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
-            }
+            _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
         }
 
         private static string ImplementationCodeSnippet(DataStructureInfo info)

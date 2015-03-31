@@ -35,8 +35,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             var info = (RequiredPropertyInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
-                _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, "");
+            _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, "");
         }
     }
 }

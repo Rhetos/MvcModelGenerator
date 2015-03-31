@@ -35,8 +35,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             var info = (LongStringPropertyInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                _hintAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"""StringMultiline""");
+            _hintAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"""StringMultiline""");
         }
     }
 }

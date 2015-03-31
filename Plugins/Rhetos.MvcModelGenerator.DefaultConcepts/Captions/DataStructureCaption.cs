@@ -45,11 +45,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 
         public void UpdateCaption(IDslModel dslModel, IDictionary<string, string> captionsValue)
         {
-            var dataStructures = dslModel.Concepts.OfType<DataStructureInfo>()
-                .Where(DataStructureCodeGenerator.IsSupported)
-                .ToList();
-
-            foreach (var dataStructure in dataStructures)
+            foreach (var dataStructure in dslModel.FindByType<DataStructureInfo>())
                 captionsValue[GetCaptionResourceKey(dataStructure)] = dataStructure.Name;
         }
     }

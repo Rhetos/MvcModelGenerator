@@ -32,18 +32,11 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts.SimpleBusinessLogic
     {
         static SimpleOverridableAttribute _renderModeAttribute = new SimpleOverridableAttribute("Rhetos.Mvc.RenderMode", false);
 
-        public static bool IsSupported(PropertyInfo info)
-        {
-            return DataStructureCodeGenerator.IsSupported(info.DataStructure)
-                && (info is GuidPropertyInfo || info is IntegerPropertyInfo);
-        }
-
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             var info = (PropertyInfo)conceptInfo;
 
-            if (IsSupported(info))
-                if (info.Name.EndsWith("ID"))
+            if ((info is GuidPropertyInfo || info is IntegerPropertyInfo) && info.Name.EndsWith("ID"))
                     _renderModeAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"Rhetos.Mvc.RenderMode.EditModeOnly");
         }
     }

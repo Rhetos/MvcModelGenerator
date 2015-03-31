@@ -59,7 +59,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
             PropertyInfo info = (PropertyInfo)conceptInfo;
             string propertyType = GetPropertyType(info);
 
-            if (!String.IsNullOrEmpty(propertyType) && DataStructureCodeGenerator.IsSupported(info.DataStructure))
+            if (!String.IsNullOrEmpty(propertyType))
                 PropertyCodeGeneratorHelper.GenerateCodeForType(info, codeBuilder, propertyType);
         }
     }

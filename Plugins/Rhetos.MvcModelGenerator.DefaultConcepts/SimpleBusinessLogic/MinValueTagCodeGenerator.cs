@@ -43,16 +43,13 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             var info = (MinValueInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.Property.DataStructure))
-            {
-                var attribute = (info.Property is IntegerPropertyInfo) ? (IOverridableAttribute)_overridableAttributeInteger :
-                    (info.Property is MoneyPropertyInfo || info.Property is DecimalPropertyInfo) ? (IOverridableAttribute)_overridableAttributeDecimal :
-                    (info.Property is DatePropertyInfo || info.Property is DateTimePropertyInfo) ? (IOverridableAttribute)_overridableAttributeDateTime : null;
+            var attribute = (info.Property is IntegerPropertyInfo) ? (IOverridableAttribute)_overridableAttributeInteger :
+                (info.Property is MoneyPropertyInfo || info.Property is DecimalPropertyInfo) ? (IOverridableAttribute)_overridableAttributeDecimal :
+                (info.Property is DatePropertyInfo || info.Property is DateTimePropertyInfo) ? (IOverridableAttribute)_overridableAttributeDateTime : null;
 
-                attribute.InsertOrOverrideAttribute(codeBuilder, info.Property, info.Value, string.Format(
-                    @"MinValue = ""{0}"", ErrorMessage = ""Value for {1} must be greater than or equal to {0}.""",
-                    info.Value, info.Property.Name));
-            }
+            attribute.InsertOrOverrideAttribute(codeBuilder, info.Property, info.Value, string.Format(
+                @"MinValue = ""{0}"", ErrorMessage = ""Value for {1} must be greater than or equal to {0}.""",
+                info.Value, info.Property.Name));
         }
     }
 }

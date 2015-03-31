@@ -35,8 +35,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         {
             var info = (DatePropertyInfo)conceptInfo;
 
-            if (DataStructureCodeGenerator.IsSupported(info.DataStructure))
-                _formatAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"DataFormatString = ""{0:d}"", ApplyFormatInEditMode = true");
+            _formatAttribute.InsertOrOverrideAttribute(codeBuilder, info, @"DataFormatString = ""{0:d}"", ApplyFormatInEditMode = true");
         }
     }
 }
