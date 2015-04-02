@@ -125,7 +125,16 @@ namespace Rhetos.MvcModelGenerator
             using (IResourceWriter writer = new ResourceWriter(CompiledResourcesFilePath))
             {
                 while (resxEnumerator.MoveNext())
-                    writer.AddResource(resxEnumerator.Key.ToString(), resxEnumerator.Value);
+                {
+                    try
+                    {
+                        writer.AddResource(resxEnumerator.Key.ToString(), resxEnumerator.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new FrameworkException(string.Format("Error while compiling resource file \"{0}\" on key \"{1}\".", ResourcesFileName, resxEnumerator.Key.ToString()), ex);
+                    }
+                }
 
                 writer.Generate();
                 writer.Close();
