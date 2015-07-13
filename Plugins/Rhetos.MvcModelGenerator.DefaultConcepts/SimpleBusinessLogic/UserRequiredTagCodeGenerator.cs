@@ -26,14 +26,16 @@ using System.ComponentModel.Composition;
 namespace Rhetos.MvcModelGenerator.DefaultConcepts
 {
     [Export(typeof(IMvcModelGeneratorPlugin))]
-    [ExportMetadata(MefProvider.Implements, typeof(RequiredPropertyInfo))]
-    public class RequiredTagCodeGenerator : IMvcModelGeneratorPlugin
+    [ExportMetadata(MefProvider.Implements, typeof(UserRequiredPropertyInfo))]
+    public class UserRequiredTagCodeGenerator : IMvcModelGeneratorPlugin
     {
+        public static SimpleOverridableAttribute RequiredAttribute = new SimpleOverridableAttribute("Required", false);
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            var info = (RequiredPropertyInfo)conceptInfo;
+            var info = (UserRequiredPropertyInfo)conceptInfo;
 
-            UserRequiredTagCodeGenerator.RequiredAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, "");
+            RequiredAttribute.InsertOrOverrideAttribute(codeBuilder, info.Property, "");
         }
     }
 }

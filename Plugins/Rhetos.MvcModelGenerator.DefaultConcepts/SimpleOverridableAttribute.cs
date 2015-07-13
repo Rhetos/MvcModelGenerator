@@ -56,7 +56,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 
         public void InsertOrOverrideAttribute(ICodeBuilder codeBuilder, TConceptType conceptInfo, string attributeParameters)
         {
-            _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, conceptInfo, null, attributeParameters);
+            _overridableAttribute.InsertOrOverrideAttribute(codeBuilder, conceptInfo, "", attributeParameters);
         }
 
         void IOverridableAttribute.InsertOrOverrideAttribute(ICodeBuilder codeBuilder, IConceptInfo conceptInfo, string value, string attributeParameters)

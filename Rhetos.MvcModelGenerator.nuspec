@@ -14,6 +14,9 @@
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Rhetos, Version=0.9.28" />
     </frameworkAssemblies>
+    <dependencies>
+      <dependency id="Rhetos.CommonConcepts" version="0.9.36-alpha008" />
+    </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
