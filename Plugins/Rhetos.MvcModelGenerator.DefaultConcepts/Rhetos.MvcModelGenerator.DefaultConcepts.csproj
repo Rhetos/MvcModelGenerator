@@ -82,6 +82,7 @@
     <Compile Include="SimpleBusinessLogic\ActiveBoolDefaultCodeGenerator.cs" />
     <Compile Include="SimpleBusinessLogic\HideIdFieldsCodeGenerator.cs" />
     <Compile Include="SimpleBusinessLogic\ReferenceDetailCodeGenerator.cs" />
+    <Compile Include="DataStructures\RowPermissionReadCodeGenerator.cs" />
     <Compile Include="SimpleBusinessLogic\UserRequiredTagCodeGenerator.cs" />
     <Compile Include="SimpleOverridableAttribute.cs" />
     <Compile Include="SimpleBusinessLogic\RegExTagCodeGenerator.cs" />

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseMvcModel.cs" />
+    <Compile Include="HasRowPermissionsAttribute.cs" />
     <Compile Include="DeactivatableAttribute.cs" />
     <Compile Include="ExtendsAttribute.cs" />
     <Compile Include="HasHistoryAttribute.cs" />
