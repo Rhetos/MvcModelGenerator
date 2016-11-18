@@ -14,9 +14,13 @@ GOTO Error0
 @ECHO ON
 :SkipVcvarsall
 
-CALL "%~dp0Packages\Rhetos\UpdateRhetosDlls.bat" /nopause || GOTO Error0
+NuGet.exe restore
+
 IF EXIST Build.log DEL Build.log || GOTO Error0
 DevEnv.com "%~dp0Rhetos.MvcModelGenerator.sln" /rebuild %Config% /out Build.log || TYPE Build.log && GOTO Error0
+
+IF NOT EXIST Install md Install
+NuGet.exe pack -o Install || PAUSE
 
 @REM ================================================
 
