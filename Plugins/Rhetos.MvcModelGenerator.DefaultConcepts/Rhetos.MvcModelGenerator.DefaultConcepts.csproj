@@ -232,6 +232,7 @@
     <Compile Include="DataStructures\ReadableDataStructureCodeGenerator.cs" />
     <Compile Include="OverridableAttribute.cs" />
     <Compile Include="PropertyCodeGeneratorHelper.cs" />
+    <Compile Include="Property\MoneyPropertyCodeGenerator.cs" />
     <Compile Include="Property\ShortStringPropertyCodeGenerator.cs" />
     <Compile Include="Property\LongStringPropertyCodeGenerator.cs" />
     <Compile Include="Property\DatePropertyCodeGenerator.cs" />
