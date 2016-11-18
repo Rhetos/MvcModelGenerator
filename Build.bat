@@ -1,26 +1,20 @@
-@REM HINT: SET SECOND ARGUMENT TO /NOPAUSE WHEN AUTOMATING THE BUILD.
+@REM HINT: USE /NOPAUSE PARAMETER WHEN AUTOMATING THE BUILD.
 
-@SET Config=%1%
-@IF [%1] == [] SET Config=Debug
-
-@IF DEFINED VisualStudioVersion GOTO SkipVcvarsall
-IF "%VS140COMNTOOLS%" NEQ "" CALL "%VS140COMNTOOLS%VsDevCmd.bat" x86 && GOTO EndVcvarsall || GOTO Error0
-IF "%VS120COMNTOOLS%" NEQ "" CALL "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" x86 && GOTO EndVcvarsall || GOTO Error0
-IF "%VS110COMNTOOLS%" NEQ "" CALL "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" x86 && GOTO EndVcvarsall || GOTO Error0
-IF "%VS100COMNTOOLS%" NEQ "" CALL "%VS100COMNTOOLS%\..\..\VC\vcvarsall.bat" x86 && GOTO EndVcvarsall || GOTO Error0
-ECHO ERROR: Cannot detect Visual Studio, missing VSxxxCOMNTOOLS variable.
-GOTO Error0
-:EndVcvarsall
+IF NOT DEFINED VisualStudioVersion CALL "%VS140COMNTOOLS%VsDevCmd.bat" || ECHO ERROR: Cannot find Visual Studio 2015, missing VS140COMNTOOLS variable. && GOTO Error0
 @ECHO ON
-:SkipVcvarsall
 
-NuGet.exe restore
+PUSHD "%~dp0" || GOTO Error0
+IF EXIST msbuild.log DEL msbuild.log || GOTO Error1
 
-IF EXIST Build.log DEL Build.log || GOTO Error0
-DevEnv.com "%~dp0Rhetos.MvcModelGenerator.sln" /rebuild %Config% /out Build.log || TYPE Build.log && GOTO Error0
+WHERE /Q NuGet.exe || ECHO ERROR: Please download the NuGet.exe command line tool. && GOTO Error1
 
+NuGet.exe restore Rhetos.MvcModelGenerator.sln -NonInteractive || GOTO Error1
+MSBuild.exe Rhetos.MvcModelGenerator.sln /target:rebuild /p:Configuration=Debug /verbosity:minimal /fileLogger || GOTO Error1
 IF NOT EXIST Install md Install
-NuGet.exe pack -o Install || PAUSE
+NuGet.exe pack Rhetos.MvcModelGenerator.Client.nuspec -o Install || GOTO Error1
+NuGet.exe pack Rhetos.MvcModelGenerator.nuspec -o Install || GOTO Error1
+
+POPD
 
 @REM ================================================
 
@@ -28,6 +22,8 @@ NuGet.exe pack -o Install || PAUSE
 @ECHO %~nx0 SUCCESSFULLY COMPLETED.
 @EXIT /B 0
 
+:Error1
+@POPD
 :Error0
 @ECHO.
 @ECHO %~nx0 FAILED.

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Rhetos.MvcModelGenerator</id>
+    <id>Rhetos.MvcModelGenerator.Client</id>
     <version>2.2.0</version>
     <authors>Omega software</authors>
     <owners>Omega software</owners>
@@ -11,17 +11,10 @@
       It automatically generates ASP.NET MVC model for all entities and other queryable data structures that are defined in a Rhetos application.</description>
     <copyright>Copyright Omega software 2015</copyright>
     <tags>Rhetos plugin</tags>
-    <dependencies>
-      <dependency id="Rhetos" version="1.2.0" />
-      <dependency id="Rhetos.CommonConcepts" version="1.2.0" />
-      <dependency id="Rhetos.MvcModelGenerator.Client" version="2.2.0" />
-    </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\Rhetos.MvcModelGenerator.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\Rhetos.MvcModelGenerator.pdb" target="lib\net451" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\Rhetos.MvcModelGenerator.DefaultConcepts.pdb" target="lib\net451" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.dll" target="lib\net451" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.pdb" target="lib\net451" />
   </files>
 </package>
