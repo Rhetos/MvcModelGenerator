@@ -1,13 +1,11 @@
-MvcModelGenerator
-=================
+# MvcModelGenerator
 
-MvcModelGenerator is a DSL package (a plugin module) for [Rhetos development platform](https://github.com/Rhetos/Rhetos).
+MvcModelGenerator is a plugin package for [Rhetos development platform](https://github.com/Rhetos/Rhetos).
 It automatically generates **ASP.NET MVC model** for all entities and other queryable data structures that are defined in a Rhetos application.
 
 See [rhetos.org](http://www.rhetos.org/) for more information on Rhetos.
 
-Features and usage instructions
-===============================
+## Features and usage instructions
 
 MvcModelGenerator package, when deployed, generates source and binary files in `\bin\Generated` folder inside Rhetos server.
 **Include the generated files in your ASP.NET MVC application** (or any other),
@@ -25,12 +23,12 @@ for faster GUI development and easier integration with Rhetos application server
 
 * The generated `Captions.resx` resource file contains default captions (display names) for properties, entities and other data structures.
   The MVC model classes are bound to the resource file by Display attribute.
-* Option A: To use the generated captions include `Captions.dll` into your web application.   
+* Option A: To use the generated captions include `Captions.dll` into your web application.
 * Option B: Include `Captions.resx` into your web application project.
   Make sure to set the file's properties in Visual Studio to match the following:
-	* **Custom Tool Namespace: Rhetos.Mvc**
-	* Build Action: Embedded Resource (default value)
-	* Custom Tool: ResXFileCodeGenerator (default value) or PublicResXFileCodeGenerator
+  * **Custom Tool Namespace: Rhetos.Mvc**
+  * Build Action: Embedded Resource (default value)
+  * Custom Tool: ResXFileCodeGenerator (default value) or PublicResXFileCodeGenerator
 
 ### Overriding default captions and localization
 
@@ -38,47 +36,30 @@ for faster GUI development and easier integration with Rhetos application server
   (for example `Captions.en-GB.resx` or `Captions.hr-HR.resx`, see [CurrentCulture](http://msdn.microsoft.com/en-us/library/vstudio/system.globalization.cultureinfo.currentculture%28v%3Dvs.100%29.aspx)).
   The ASP.NET will automatically use the captions you entered in the culture-specific resource file,
   or fallback to the default captions if the localized caption is not entered.
-	* Make sure to set the same properties in Visual Studio for the localized resource file as for the default `Captions.resx` file.
+  * Make sure to set the same properties in Visual Studio for the localized resource file as for the default `Captions.resx` file.
 * There are [free resx editors](https://www.google.hr/search?q=free+multilingual+parallel+net+resource+editor+resx) to help you enter the captions.
 
-### Extending heuristics for default captions 
+### Extending heuristics for default captions
 
 * MvcModelGenerator includes CamelCase splitter plugin (*CamelCaseCaptions*) that splits property names into words when generating default captions,
   reducing the need to override default captions.
 * Similar caption processing plugins may be implemented in a Rhetos package by implementing *ICaptionsValuePlugin* interface.
 
-Deployment
-==========
+## Build
 
-### Prerequisites
+**Note:** This package is already available at the [NuGet.org](https://www.nuget.org/) online gallery.
+You don't need to build it from source in order to use it in your application.
 
-* *CommonConcepts* package must be deployed along with *MvcModelGenerator*.
+To build the package from source, run `Build.bat`.
+The script will pause in case of an error.
+The build output is a NuGet package in the "Install" subfolder.
 
-Building binaries from source
-=============================
+## Installation
 
-### Prerequisites
+To install this package to a Rhetos server, add it to the Rhetos server's *RhetosPackages.config* file
+and make sure the NuGet package location is listed in the *RhetosPackageSources.config* file.
 
-* Build utilities in this project are based on relative path to Rhetos repository.
-  [Rhetos source](https://github.com/Rhetos/Rhetos) should be downloaded to a folder
-  with relative path `..\..\Rhetos` and compiled (use `Build.bat`),
-  before this package's `Build.bat` script is executed.
-
-Sample folder structure:
- 
-	\ROOT
-		\Rhetos
-		\RhetosPackages
-			\MvcModelGenerator
-
-
-### Build
-
-1. Build this package by executing `Build.bat`. The script will pause in case of an error.
-   * The script automatically copies all needed dll files from Rhetos folder and builds the Rhetos.MvcModelGenerator.sln using Visual Studio (command-line).
-
-### Create installation package
-
-1. Set the new version number in `ChangeVersion.bat` and execute it.
-2. Execute `Build.bat`.
-3. Execute `CreatePackage.bat`. It creates installation package (.zip) in parent directory of MvcModelGenerator.
+* The package ID is "**Rhetos.MvcModelGenerator**".
+  This package is available at the [NuGet.org](https://www.nuget.org/) online gallery.
+  It can be downloaded or installed directly from there.
+* For more information, see [Installing plugin packages](https://github.com/Rhetos/Rhetos/wiki/Installing-plugin-packages).
