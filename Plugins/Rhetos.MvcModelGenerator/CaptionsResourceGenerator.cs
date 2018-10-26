@@ -19,7 +19,6 @@
 
 using Microsoft.CSharp;
 using Rhetos.Compiler;
-using Rhetos.Dsl;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using System;
@@ -29,7 +28,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Resources;
 using System.Resources.Tools;
 using System.Text;
@@ -65,10 +63,12 @@ namespace Rhetos.MvcModelGenerator
         public static string ResourcesAssemblyName { get { return "Captions"; } }
         public static string ResourcesFileName { get { return "Captions.resx"; } }
         public static string ResourcesFilePath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesFileName); } }
-        public static string CompiledResourcesFilePath { get { return Path.ChangeExtension(ResourcesFilePath, "resources"); } }
+        public static string CompiledResourcesFilePath { get { return Path.ChangeExtension(ResourcesFilePath, ResourceExtension); } }
         public static string ResourcesNamespaceName { get { return "Rhetos.Mvc"; } }
         public static string ResourcesClassName { get { return "Captions"; } }
         public static string ResourcesClassFullName { get { return ResourcesNamespaceName + "." + ResourcesClassName; } }
+        private static readonly string ResourceExtension = "resources";
+        public static string ResourceFullName => $"{ResourcesClassFullName}.{ResourceExtension}";
         public static string ResourcesAssemblyDllPath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesAssemblyName + ".dll"); } }
 
         public void Generate()
@@ -84,16 +84,8 @@ namespace Rhetos.MvcModelGenerator
             var assemblySource = GenerateResourcesCs();
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated cs");
 
-            var compilerParameters = new System.CodeDom.Compiler.CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = false,
-                OutputAssembly = ResourcesAssemblyDllPath,
-                IncludeDebugInformation = true,
-                CompilerOptions = ""
-            };
-            compilerParameters.EmbeddedResources.Add(CompiledResourcesFilePath);
-            _assemblyGenerator.Generate(assemblySource, compilerParameters);
+            var embeddedResources = new List<EmbeddedResource> { new EmbeddedResource { Name = ResourceFullName, Path = CompiledResourcesFilePath } };
+            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, embeddedResources);
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated dll");
         }
 
@@ -164,7 +156,7 @@ namespace Rhetos.MvcModelGenerator
             return new SimpleAssemblySource
             {
                 GeneratedCode = writer.ToString(),
-                RegisteredReferences = code.ReferencedAssemblies.Cast<string>()
+                RegisteredReferences = new List<string> { typeof(Uri).Assembly.Location } // Location of the System.dll
             };
         }
 

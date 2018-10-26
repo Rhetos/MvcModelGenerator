@@ -21,16 +21,11 @@ using Rhetos.Compiler;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
-using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ICodeGenerator = Rhetos.Compiler.ICodeGenerator;
 
 namespace Rhetos.MvcModelGenerator
@@ -68,11 +63,7 @@ namespace Rhetos.MvcModelGenerator
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
 
-            _assemblyGenerator.Generate(assemblySource, new CompilerParameters
-                {
-                    OutputAssembly = Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"),
-                    IncludeDebugInformation = true
-                });
+            _assemblyGenerator.Generate(assemblySource, Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"));
 
             _performanceLogger.Write(sw, "MvcModelGenerator.Generate");
         }
