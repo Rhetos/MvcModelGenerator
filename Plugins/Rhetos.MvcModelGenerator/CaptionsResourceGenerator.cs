@@ -84,8 +84,8 @@ namespace Rhetos.MvcModelGenerator
             var assemblySource = GenerateResourcesCs();
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated cs");
 
-            var embeddedResources = new List<EmbeddedResource> { new EmbeddedResource { Name = ResourceFullName, Path = CompiledResourcesFilePath } };
-            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, embeddedResources);
+            var manifestResources = new List<ManifestResource> { new ManifestResource { Name = ResourceFullName, Path = CompiledResourcesFilePath } };
+            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, manifestResources);
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated dll");
         }
 
@@ -156,7 +156,11 @@ namespace Rhetos.MvcModelGenerator
             return new SimpleAssemblySource
             {
                 GeneratedCode = writer.ToString(),
-                RegisteredReferences = new List<string> { typeof(Uri).Assembly.Location } // Location of the System.dll
+                RegisteredReferences = new List<string>
+                {
+                    typeof(object).Assembly.Location, // Location of the mscorlib.dll
+                    typeof(Uri).Assembly.Location // Location of the System.dll
+                } 
             };
         }
 
