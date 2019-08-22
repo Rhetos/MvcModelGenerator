@@ -226,7 +226,8 @@
     <Compile Include="DataStructures\ExtendsDataStructureCodeGenerator.cs" />
     <Compile Include="DataStructures\DeactivatableDataStructureCodeGenerator.cs" />
     <Compile Include="DataStructures\HistoryDataStructureCodeGenerator.cs" />
-    <Compile Include="DataStructures\ImplementsInterfaceCodeGenerator.cs" />
+    <Compile Include="DataStructures\ImplementInMvcModelCodeGenerator.cs" />
+    <Compile Include="DataStructures\ImplementInMvcModelInfo.cs" />
     <Compile Include="DataStructures\LoggingDataStructureCodeGenerator.cs" />
     <Compile Include="DataStructures\WriteCodeGenerator.cs" />
     <Compile Include="DataStructures\WritableOrmDataStructureCodeGenerator.cs" />
