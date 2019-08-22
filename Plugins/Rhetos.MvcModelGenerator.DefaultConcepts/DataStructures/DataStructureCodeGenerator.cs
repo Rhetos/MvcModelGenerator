@@ -53,9 +53,13 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
             DataStructureInfo info = (DataStructureInfo)conceptInfo;
 
             codeBuilder.InsertCode(ImplementationCodeSnippet(info));
-            codeBuilder.AddReferencesFromDependency(typeof(Rhetos.Mvc.BaseMvcModel));
 
-            _localizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
+			if (IsEntityType(info))
+				Dom.DefaultConcepts.DataStructureCodeGenerator.AddInterfaceAndReference(codeBuilder, typeof(Mvc.BaseMvcModel), info);
+
+			codeBuilder.AddReferencesFromDependency(typeof(Mvc.BaseMvcModel));
+
+            LocalizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
         }
 
         private static string ImplementationCodeSnippet(DataStructureInfo info)
@@ -64,7 +68,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 namespace Rhetos.Mvc.{0}
 {{
     {3}
-    public partial class {1}{4}
+    public partial class {1} {4}
     {{
         public const string Entity{1} = ""{1}"";
 
@@ -76,15 +80,14 @@ namespace Rhetos.Mvc.{0}
                 info.Name,
                 PropertiesTag.Evaluate(info),
                 AttributesTag.Evaluate(info),
-                IsEntityType(info) ? " : Rhetos.Mvc.BaseMvcModel" : "");
+	            Dom.DefaultConcepts.DataStructureCodeGenerator.InterfaceTag.Evaluate(info));
         }
 
-        static SimpleOverridableDataStructureAttribute _localizedDisplayAttribute = new SimpleOverridableDataStructureAttribute("Rhetos.Mvc.LocalizedDisplayName", false);
+        static readonly SimpleOverridableDataStructureAttribute LocalizedDisplayAttribute = new SimpleOverridableDataStructureAttribute("Rhetos.Mvc.LocalizedDisplayName", false);
 
         static string LocalizedDisplayAttributeProperties(DataStructureInfo info)
         {
-            return string.Format(@"""{0}"", typeof(CaptionsResourceClass)",
-                DataStructureCaption.GetCaptionResourceKey(info));
+            return $@"""{DataStructureCaption.GetCaptionResourceKey(info)}"", typeof(CaptionsResourceClass)";
         }
     }
 }

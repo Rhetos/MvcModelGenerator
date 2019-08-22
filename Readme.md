@@ -18,6 +18,11 @@ for faster GUI development and easier integration with Rhetos application server
   *Required*, *UIHint*, *MaxLength*, *MinLength*, *RegularExpression* and *Display*.
 * Custom attributes are also assigned for additional functionality:
   *MaxValue*, *MinValue*, *RenderMode* and *LocalizedDisplayName*.
+* If you want to add implemented interfaces defined in DSL using Implements DSL concept, add ImplementInMvcModel concept to Implements:
+
+```
+	Implements 'MyNamespace.ITheInteface, MyAssembly' {ImplementInMvcModel; }
+```
 
 ### Captions resource file
 
