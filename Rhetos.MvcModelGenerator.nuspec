@@ -19,6 +19,7 @@
   </metadata>
   <files>
     <file src="Readme.md" target="" />
+    <file src="ChangeLog.md" target="" />
     <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\Rhetos.MvcModelGenerator.dll" target="lib\net451" />
     <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\Rhetos.MvcModelGenerator.pdb" target="lib\net451" />
     <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\net451" />
