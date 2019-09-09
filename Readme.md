@@ -20,8 +20,8 @@ for faster GUI development and easier integration with Rhetos application server
   *MaxValue*, *MinValue*, *RenderMode* and *LocalizedDisplayName*.
 * If you want to add implemented interfaces defined in DSL using Implements DSL concept, add ImplementInMvcModel concept to Implements:
 
-```
-	Implements 'MyNamespace.ITheInteface, MyAssembly' {ImplementInMvcModel; }
+```c
+Implements 'MyNamespace.ITheInteface, MyAssembly' { ImplementInMvcModel; }
 ```
 
 ### Captions resource file
