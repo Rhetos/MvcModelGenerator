@@ -164,7 +164,11 @@ namespace Rhetos.MvcModelGenerator
             return new SimpleAssemblySource
             {
                 GeneratedCode = writer.ToString(),
-                RegisteredReferences = code.ReferencedAssemblies.Cast<string>()
+                RegisteredReferences = new List<string>
+                {
+                    typeof(object).Assembly.Location, // Location of the mscorlib.dll
+                    typeof(Uri).Assembly.Location // Location of the System.dll
+                }
             };
         }
 
