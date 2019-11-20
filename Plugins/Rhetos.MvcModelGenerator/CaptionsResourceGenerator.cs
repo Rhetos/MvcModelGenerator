@@ -22,6 +22,7 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
+using Rhetos.Utilities;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -64,12 +65,12 @@ namespace Rhetos.MvcModelGenerator
 
         public static string ResourcesAssemblyName { get { return "Captions"; } }
         public static string ResourcesFileName { get { return "Captions.resx"; } }
-        public static string ResourcesFilePath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesFileName); } }
+        public static string ResourcesFilePath { get { return Path.Combine(Paths.GeneratedFolder, ResourcesFileName); } }
         public static string CompiledResourcesFilePath { get { return Path.ChangeExtension(ResourcesFilePath, "resources"); } }
         public static string ResourcesNamespaceName { get { return "Rhetos.Mvc"; } }
         public static string ResourcesClassName { get { return "Captions"; } }
         public static string ResourcesClassFullName { get { return ResourcesNamespaceName + "." + ResourcesClassName; } }
-        public static string ResourcesAssemblyDllPath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Generated", ResourcesAssemblyName + ".dll"); } }
+        public static string ResourcesAssemblyDllPath { get { return Path.Combine(Paths.GeneratedFolder, ResourcesAssemblyName + ".dll"); } }
 
         public void Generate()
         {
@@ -84,16 +85,8 @@ namespace Rhetos.MvcModelGenerator
             var assemblySource = GenerateResourcesCs();
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated cs");
 
-            var compilerParameters = new System.CodeDom.Compiler.CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = false,
-                OutputAssembly = ResourcesAssemblyDllPath,
-                IncludeDebugInformation = true,
-                CompilerOptions = ""
-            };
-            compilerParameters.EmbeddedResources.Add(CompiledResourcesFilePath);
-            _assemblyGenerator.Generate(assemblySource, compilerParameters);
+            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, 
+                new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } });
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated dll");
         }
 
