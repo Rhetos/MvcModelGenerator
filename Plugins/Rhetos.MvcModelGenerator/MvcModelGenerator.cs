@@ -68,11 +68,7 @@ namespace Rhetos.MvcModelGenerator
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
 
-            _assemblyGenerator.Generate(assemblySource, new CompilerParameters
-                {
-                    OutputAssembly = Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"),
-                    IncludeDebugInformation = true
-                });
+            _assemblyGenerator.Generate(assemblySource, Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"));
 
             _performanceLogger.Write(sw, "MvcModelGenerator.Generate");
         }
