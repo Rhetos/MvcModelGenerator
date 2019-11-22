@@ -14,7 +14,7 @@
   </metadata>
   <files>
     <file src="Readme.md" target="" />
-    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.dll" target="lib\net472" />
-    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.pdb" target="lib\net472" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.dll" target="lib\net451" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.pdb" target="lib\net451" />
   </files>
 </package>
