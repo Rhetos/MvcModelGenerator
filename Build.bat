@@ -5,7 +5,7 @@ SET Prerelease=auto
 CALL Tools\Build\FindVisualStudio.bat || GOTO Error0
 
 REM Updating the build version.
-PowerShell .\Tools\Build\ChangeVersionMvc.ps1 %Version% %Prerelease% || GOTO Error0
+PowerShell -ExecutionPolicy ByPass .\Tools\Build\ChangeVersionMvc.ps1 %Version% %Prerelease% || GOTO Error0
 
 WHERE /Q NuGet.exe || ECHO ERROR: Please download the NuGet.exe command line tool. && GOTO Error0
 NuGet restore -NonInteractive || GOTO Error0
@@ -15,7 +15,7 @@ NuGet pack Rhetos.MvcModelGenerator.Client.nuspec -OutputDirectory Install || GO
 NuGet pack Rhetos.MvcModelGenerator.nuspec -OutputDirectory Install || GOTO Error0
 
 REM Updating the build version back to "dev" (internal development build), to avoid spamming git history with timestamped prerelease versions.
-PowerShell .\Tools\Build\ChangeVersionMvc.ps1 %Version% dev || GOTO Error0
+PowerShell -ExecutionPolicy ByPass .\Tools\Build\ChangeVersionMvc.ps1 %Version% dev || GOTO Error0
 
 @REM ================================================
 
