@@ -21,17 +21,11 @@ using Rhetos.Compiler;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
-using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ICodeGenerator = Rhetos.Compiler.ICodeGenerator;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -68,7 +62,9 @@ namespace Rhetos.MvcModelGenerator
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
 
-            _assemblyGenerator.Generate(assemblySource, Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"));
+            var emptyResources = new List<ManifestResource>(); // HACK: Using empty resources to force AssemblyGenerator for new Rhetos applications to build this assembly as an asset. The generated MVC model should not be part of the Rhetos application. It is a resource for other applications.
+
+            _assemblyGenerator.Generate(assemblySource, Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"), emptyResources);
 
             _performanceLogger.Write(sw, "MvcModelGenerator.Generate");
         }

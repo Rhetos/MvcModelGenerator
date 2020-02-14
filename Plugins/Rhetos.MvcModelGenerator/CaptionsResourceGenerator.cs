@@ -85,8 +85,9 @@ namespace Rhetos.MvcModelGenerator
             var assemblySource = GenerateResourcesCs();
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated cs");
 
-            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, 
-                new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } });
+            var resources = new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } };
+
+            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, resources);
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated dll");
         }
 
