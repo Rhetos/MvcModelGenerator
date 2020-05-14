@@ -1,5 +1,9 @@
 # MvcModelGenerator release notes
 
+## 2.5.0 (2020-05-14)
+
+* Support for Rhetos 4.0: New interface for generating 'assets' assembly files that are not part of the main application.
+
 ## 2.4.0 (2019-09-16)
 
 ## Internal improvements
