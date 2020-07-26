@@ -19,7 +19,6 @@
 
 using Microsoft.CSharp;
 using Rhetos.Compiler;
-using Rhetos.Dsl;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
@@ -47,43 +46,67 @@ namespace Rhetos.MvcModelGenerator
         private readonly IAssemblyGenerator _assemblyGenerator;
         private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
+        private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
+        private FilesUtility _filesUtility;
+        private readonly CacheUtility _cacheUtility;
+
+        public IEnumerable<string> Dependencies => null;
 
         public CaptionsResourceGenerator(
             IPluginsContainer<ICaptionsResourceGeneratorPlugin> plugins,
             CaptionsInitialCodePlugin initialCodePlugin,
             ICodeGenerator codeGenerator,
             IAssemblyGenerator assemblyGenerator,
-            ILogProvider logProvider)
+            ILogProvider logProvider,
+            RhetosBuildEnvironment rhetosBuildEnvironment,
+            FilesUtility filesUtility)
         {
             _plugins = plugins;
             _initialCodePlugin = initialCodePlugin;
             _codeGenerator = codeGenerator;
             _assemblyGenerator = assemblyGenerator;
             _logger = logProvider.GetLogger("CaptionsResourceGenerator");
-            _performanceLogger = logProvider.GetLogger("Performance");
+            _performanceLogger = logProvider.GetLogger($"Performance.{nameof(CaptionsResourceGenerator)}");
+            _rhetosBuildEnvironment = rhetosBuildEnvironment;
+            _filesUtility = filesUtility;
+            _cacheUtility = new CacheUtility(typeof(CaptionsResourceGenerator), rhetosBuildEnvironment, filesUtility);
         }
 
-        public static string ResourcesAssemblyName { get { return "Captions"; } }
-        public static string ResourcesFileName { get { return "Captions.resx"; } }
-        public static string ResourcesFilePath { get { return Path.Combine(Paths.GeneratedFolder, ResourcesFileName); } }
-        public static string CompiledResourcesFilePath { get { return Path.ChangeExtension(ResourcesFilePath, "resources"); } }
-        public static string ResourcesNamespaceName { get { return "Rhetos.Mvc"; } }
-        public static string ResourcesClassName { get { return "Captions"; } }
-        public static string ResourcesClassFullName { get { return ResourcesNamespaceName + "." + ResourcesClassName; } }
-        public static string ResourcesAssemblyDllPath { get { return Path.Combine(Paths.GeneratedFolder, ResourcesAssemblyName + ".dll"); } }
+        public static string ResourcesAssemblyName => "Captions";
+        public static string ResourcesFileName => "Captions.resx";
+        public static string ResourcesNamespaceName => "Rhetos.Mvc";
+        public static string ResourcesClassName => "Captions";
+        public static string ResourcesClassFullName => ResourcesNamespaceName + "." + ResourcesClassName;
+        public string ResourcesFilePath => Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesFileName);
+        public string CompiledResourcesFilePath => Path.ChangeExtension(ResourcesFilePath, "resources");
+        public string SourceFromCompiledResources => $"{CompiledResourcesFilePath}.cs";
+        public string ResourcesAssemblyDllPath => GetResourcesAssemblyDllPath(_rhetosBuildEnvironment.GeneratedAssetsFolder);
+
+        public static string GetResourcesAssemblyDllPath(string assetsFolder) => Path.Combine(assetsFolder, ResourcesAssemblyName + ".dll");
 
         public void Generate()
         {
             var sw = Stopwatch.StartNew();
 
-            GenerateResourcesResx();
-            _performanceLogger.Write(sw, "CaptionsResourceGenerator generated resx");
+            string sourceFromResources;
+            if (GenerateNewResourcesResx())
+            {
+                _performanceLogger.Write(sw, "Generated resx.");
+                CompileResourceFile();
+                _performanceLogger.Write(sw, "Compiled resx to resources.");
+                sourceFromResources = GenerateSourceFromCompiledResources();
+                _performanceLogger.Write(sw, "Generated cs.");
+            }
+            else
+            {
+                _logger.Trace(() => $"Reusing '{CompiledResourcesFilePath}' from cache.");
+                _cacheUtility.CopyFromCache(CompiledResourcesFilePath);
+                _logger.Trace(() => $"Reusing '{SourceFromCompiledResources}' from cache.");
+                _cacheUtility.CopyFromCache(SourceFromCompiledResources);
+                sourceFromResources = File.ReadAllText(SourceFromCompiledResources);
+            }
 
-            CompileResourceFile();
-            _performanceLogger.Write(sw, "CaptionsResourceGenerator compiled resx to resources");
-
-            var assemblySource = GenerateResourcesCs();
-            _performanceLogger.Write(sw, "CaptionsResourceGenerator generated cs");
+            var assemblySource = GenerateAssemblyResourcesCs(sourceFromResources);
 
             var resources = new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } };
 
@@ -91,13 +114,34 @@ namespace Rhetos.MvcModelGenerator
             _performanceLogger.Write(sw, "CaptionsResourceGenerator generated dll");
         }
 
-        private void GenerateResourcesResx()
+        private bool GenerateNewResourcesResx()
         {
             IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
 
             string resxContext = generatedSource.GeneratedCode;
             resxContext = CleanupXml(resxContext);
+
+            var resxHash = _cacheUtility.ComputeHash(resxContext);
+            var cachedHash = _cacheUtility.LoadHash(ResourcesFilePath);
+            if (resxHash.SequenceEqual(cachedHash))
+            {
+                _logger.Trace(() => $"'{ResourcesFilePath}' hash not changed, using cache.");
+                if (_cacheUtility.FileIsCached(CompiledResourcesFilePath) && _cacheUtility.FileIsCached(SourceFromCompiledResources))
+                    return false;
+
+                _logger.Trace(() => $"'{CompiledResourcesFilePath}' and '{SourceFromCompiledResources}' expected in cache, but some are missing.");
+            }
+            else
+            {
+                _logger.Trace(() => $"'{ResourcesFilePath}' hash changed, invalidating cache.");
+            }
+
+            _cacheUtility.RemoveFromCache(CompiledResourcesFilePath);
+            _cacheUtility.RemoveFromCache(SourceFromCompiledResources);
+
             File.WriteAllText(ResourcesFilePath, resxContext, Encoding.UTF8);
+            _cacheUtility.SaveHash(ResourcesFilePath, resxHash);
+            return true;
         }
 
         const string detectLineTag = @"\n\s*<!--.*?-->\s*\r?\n";
@@ -134,9 +178,23 @@ namespace Rhetos.MvcModelGenerator
                 writer.Close();
             }
             resxReader.Close();
+            _cacheUtility.CopyToCache(CompiledResourcesFilePath);
         }
 
-        private IAssemblySource GenerateResourcesCs()
+        private IAssemblySource GenerateAssemblyResourcesCs(string generatedSource)
+        {
+            return new SimpleAssemblySource
+            {
+                GeneratedCode = generatedSource,
+                RegisteredReferences = new List<string>
+                {
+                    typeof(object).Assembly.Location, // Location of the mscorlib.dll
+                    typeof(Uri).Assembly.Location // Location of the System.dll
+                }
+            };
+        }
+
+        private string GenerateSourceFromCompiledResources()
         {
             string[] errors;
             CSharpCodeProvider provider = new CSharpCodeProvider();
@@ -154,21 +212,11 @@ namespace Rhetos.MvcModelGenerator
 
             var writer = new StringWriter();
             provider.GenerateCodeFromCompileUnit(code, writer, new System.CodeDom.Compiler.CodeGeneratorOptions());
+            var sourceCode = writer.ToString();
 
-            return new SimpleAssemblySource
-            {
-                GeneratedCode = writer.ToString(),
-                RegisteredReferences = new List<string>
-                {
-                    typeof(object).Assembly.Location, // Location of the mscorlib.dll
-                    typeof(Uri).Assembly.Location // Location of the System.dll
-                }
-            };
-        }
-
-        public IEnumerable<string> Dependencies
-        {
-            get { return null; }
+            File.WriteAllText(SourceFromCompiledResources, sourceCode);
+            _cacheUtility.CopyToCache(SourceFromCompiledResources);
+            return sourceCode;
         }
     }
 }

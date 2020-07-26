@@ -23,6 +23,7 @@ using Rhetos.Compiler;
 using Rhetos.Dsl;
 using System.ComponentModel.Composition;
 using Rhetos.Extensibility;
+using Rhetos.Utilities;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -32,12 +33,19 @@ namespace Rhetos.MvcModelGenerator
     {
         public const string UsingTag = "/*using*/";
         public const string OverrideCaptionsResourceClassTag = "/*OverrideCaptionsResourceClass*/";
-        
+
+        private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
+
+        public MvcModelInitialCodeGenerator(RhetosBuildEnvironment rhetosBuildEnvironment)
+        {
+            _rhetosBuildEnvironment = rhetosBuildEnvironment;
+        }
+
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             codeBuilder.InsertCode(CodeSnippet);
 
-            codeBuilder.AddReference(CaptionsResourceGenerator.ResourcesAssemblyDllPath);
+            codeBuilder.AddReference(CaptionsResourceGenerator.GetResourcesAssemblyDllPath(_rhetosBuildEnvironment.GeneratedAssetsFolder));
             codeBuilder.AddReferencesFromDependency(typeof(Guid));
             codeBuilder.AddReferencesFromDependency(typeof(System.Linq.Enumerable));
             codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DefaultValueAttribute)); // using namespace System.ComponentModel
