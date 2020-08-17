@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Rhetos.MvcModelGenerator
 {
+    /// <summary>
+    /// This class is mostly copied from Rhetos framework's CacheUtility.
+    /// </summary>
     internal class CacheUtility
     {
         private readonly FilesUtility _filesUtility;
