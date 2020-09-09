@@ -92,6 +92,7 @@ namespace Rhetos.MvcModelGenerator
             }
             else
             {
+                _cacheUtility.CopyFromCache(ResourcesFilePath);
                 _cacheUtility.CopyFromCache(CompiledResourcesFilePath);
                 _cacheUtility.CopyFromCache(SourceFromCompiledResources);
                 sourceFromResources = File.ReadAllText(SourceFromCompiledResources);
@@ -143,6 +144,7 @@ namespace Rhetos.MvcModelGenerator
 
             File.WriteAllText(ResourcesFilePath, resxContext, Encoding.UTF8);
             _cacheUtility.SaveHash(ResourcesFilePath, resxHash);
+            _cacheUtility.CopyToCache(ResourcesFilePath);
 
             _performanceLogger.Write(sw, "GenerateNewResourcesResx: Save.");
 
