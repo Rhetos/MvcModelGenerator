@@ -21,6 +21,7 @@ using System;
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using System.Security;
+using System.Linq;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -161,7 +162,7 @@ namespace Rhetos.MvcModelGenerator
         {
             codeBuilder.InsertCode(CodeSnippet);
 
-            foreach (var caption in _captionsProvider.Captions)
+            foreach (var caption in _captionsProvider.Captions.OrderBy(c => c.Key))
                 codeBuilder.InsertResourceData(caption.Key, caption.Value);
         }
     }

@@ -115,6 +115,12 @@ namespace Rhetos.MvcModelGenerator
         {
             var sw = Stopwatch.StartNew();
 
+            // NOTE: There is no need for ICaptionsResourceGeneratorPlugin plugins, they are not used.
+            // CaptionsInitialCodePlugin _initialCodePlugin is this only implementation and all the work
+            // is done there by calling ICaptionsProvider and its ICaptionsValuePlugin plugins.
+            // The ICaptionsResourceGeneratorPlugin interface can be deleted, and the code from CaptionsInitialCodePlugin called directly.
+            // We could leave ICaptionsResourceGeneratorPlugin just in case we need to add
+            // to the resx file something other then simple "data" elements for captions.
             IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
             string resxContext = generatedSource.GeneratedCode;
             resxContext = CleanupXml(resxContext);
