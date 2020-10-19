@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Rhetos.MvcModelGenerator</id>
-    <version>3.1.0-dev</version>
+    <version>3.2.0-dev</version>
     <authors>Omega software</authors>
     <owners>Omega software</owners>
     <licenseUrl>http://opensource.org/licenses/AGPL-3.0</licenseUrl>
@@ -13,7 +13,7 @@
     <tags>Rhetos plugin</tags>
     <dependencies>
       <dependency id="Rhetos.CommonConcepts" version="4.0.1" />
-      <dependency id="Rhetos.MvcModelGenerator.Client" version="3.1.0-dev" />
+      <dependency id="Rhetos.MvcModelGenerator.Client" version="3.2.0-dev" />
     </dependencies>
   </metadata>
   <files>
