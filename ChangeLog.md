@@ -1,5 +1,9 @@
 # MvcModelGenerator release notes
 
+## 3.1.0 (2020-10-19)
+
+* Build optimization: Sorting entries in Captions.resx file to avoid unnecessary rebuilds of Captions.dll and Rhetos.Mvc.dll.
+
 ## 3.0.0 (2020-09-23)
 
 * Upgrade to Rhetos 4.0.
