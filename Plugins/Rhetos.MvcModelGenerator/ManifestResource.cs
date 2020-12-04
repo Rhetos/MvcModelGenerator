@@ -17,14 +17,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
-using System.Collections.Generic;
 
 namespace Rhetos.MvcModelGenerator
 {
-    class SimpleAssemblySource : IAssemblySource
+    public class ManifestResource
     {
-        public string GeneratedCode { get; set; }
-        public IEnumerable<string> RegisteredReferences { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public bool IsPublic { get; set; } = true;
     }
 }

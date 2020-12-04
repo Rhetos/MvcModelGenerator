@@ -17,14 +17,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
-using System.Collections.Generic;
-
 namespace Rhetos.MvcModelGenerator
 {
-    class SimpleAssemblySource : IAssemblySource
+    [Options("MvcModelGenerator")]
+    public class MvcModelGeneratorOptions
     {
-        public string GeneratedCode { get; set; }
-        public IEnumerable<string> RegisteredReferences { get; set; }
+        /// <summary>
+        /// Number of errors that will be shown when the compilation fails.
+        /// </summary>
+        public int AssemblyGeneratorErrorReportLimit { get; set; } = 5;
     }
 }

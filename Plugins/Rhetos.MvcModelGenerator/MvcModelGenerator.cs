@@ -36,18 +36,21 @@ namespace Rhetos.MvcModelGenerator
         private readonly ICodeGenerator _codeGenerator;
         private readonly IAssemblyGenerator _assemblyGenerator;
         private readonly ILogger _performanceLogger;
+        private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
         public const string AssemblyName = "Rhetos.Mvc";
 
         public MvcModelGenerator(
             IPluginsContainer<IMvcModelGeneratorPlugin> plugins,
             ICodeGenerator codeGenerator,
             IAssemblyGenerator assemblyGenerator,
-            ILogProvider logProvider
+            ILogProvider logProvider,
+            RhetosBuildEnvironment rhetosBuildEnvironment
         )
         {
             _plugins = plugins;
             _codeGenerator = codeGenerator;
             _assemblyGenerator = assemblyGenerator;
+            _rhetosBuildEnvironment = rhetosBuildEnvironment;
             _performanceLogger = logProvider.GetLogger("Performance");
         }
 
@@ -62,16 +65,14 @@ namespace Rhetos.MvcModelGenerator
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectLineTag, "\n");
             assemblySource.GeneratedCode = Regex.Replace(assemblySource.GeneratedCode, detectTag, "");
 
-            var emptyResources = new List<ManifestResource>(); // HACK: Using empty resources to force AssemblyGenerator for new Rhetos applications to build this assembly as an asset. The generated MVC model should not be part of the Rhetos application. It is a resource for other applications.
-
-            _assemblyGenerator.Generate(assemblySource, Path.Combine(Paths.GeneratedFolder, AssemblyName + ".dll"), emptyResources);
+            _assemblyGenerator.Generate(assemblySource, Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, AssemblyName + ".dll"));
 
             _performanceLogger.Write(sw, "MvcModelGenerator.Generate");
         }
 
         private SimpleAssemblySource GenerateSource()
         {
-            IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null);
+            var generatedSource = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null);
             SimpleAssemblySource assemblySource = new SimpleAssemblySource
             {
                 GeneratedCode = generatedSource.GeneratedCode,
