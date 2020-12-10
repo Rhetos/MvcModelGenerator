@@ -17,15 +17,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Rhetos.Compiler;
 using Rhetos.Dsl;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -33,7 +30,6 @@ namespace Rhetos.MvcModelGenerator
     {
         private readonly IDslModel _dslModel;
         private readonly IPluginsContainer<ICaptionsValuePlugin> _plugins;
-        private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
 
         public CaptionsValueProvider(
@@ -43,7 +39,6 @@ namespace Rhetos.MvcModelGenerator
         {
             _dslModel = dslModel;
             _plugins = plugins;
-            _logger = logProvider.GetLogger("CaptionsValueGenerator");
             _performanceLogger = logProvider.GetLogger("Performance");
         }
 

@@ -18,7 +18,6 @@
 */
 
 using Rhetos.Compiler;
-using Rhetos.Dsl;
 
 namespace Rhetos.MvcModelGenerator
 {

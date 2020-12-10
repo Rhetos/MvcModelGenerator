@@ -22,7 +22,6 @@ using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
@@ -41,7 +40,6 @@ namespace Rhetos.MvcModelGenerator
         private readonly IPluginsContainer<ICaptionsResourceGeneratorPlugin> _plugins;
         private readonly CaptionsInitialCodePlugin _initialCodePlugin;
         private readonly ICodeGenerator _codeGenerator;
-        private readonly IAssemblyGenerator _assemblyGenerator;
         private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
         private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
@@ -53,7 +51,6 @@ namespace Rhetos.MvcModelGenerator
             IPluginsContainer<ICaptionsResourceGeneratorPlugin> plugins,
             CaptionsInitialCodePlugin initialCodePlugin,
             ICodeGenerator codeGenerator,
-            IAssemblyGenerator assemblyGenerator,
             ILogProvider logProvider,
             RhetosBuildEnvironment rhetosBuildEnvironment,
             FilesUtility filesUtility)
@@ -61,7 +58,6 @@ namespace Rhetos.MvcModelGenerator
             _plugins = plugins;
             _initialCodePlugin = initialCodePlugin;
             _codeGenerator = codeGenerator;
-            _assemblyGenerator = assemblyGenerator;
             _logger = logProvider.GetLogger("CaptionsResourceGenerator");
             _performanceLogger = logProvider.GetLogger($"Performance.{nameof(CaptionsResourceGenerator)}");
             _rhetosBuildEnvironment = rhetosBuildEnvironment;
@@ -76,9 +72,6 @@ namespace Rhetos.MvcModelGenerator
         public string ResourcesFilePath => Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesFileName);
         public string CompiledResourcesFilePath => Path.ChangeExtension(ResourcesFilePath, "resources");
         public string SourceFromCompiledResources => $"{CompiledResourcesFilePath}.cs";
-        public string ResourcesAssemblyDllPath => GetResourcesAssemblyDllPath(_rhetosBuildEnvironment.GeneratedAssetsFolder);
-
-        public static string GetResourcesAssemblyDllPath(string assetsFolder) => Path.Combine(assetsFolder, ResourcesAssemblyName + ".dll");
 
         public void Generate()
         {
@@ -97,16 +90,8 @@ namespace Rhetos.MvcModelGenerator
                 sourceFromResources = File.ReadAllText(SourceFromCompiledResources);
             }
 
-            var assemblySource = new SimpleAssemblySource
-            {
-                GeneratedCode = sourceFromResources,
-                RegisteredReferences = new List<string>
-                {
-                    typeof(object).Assembly.Location, // Location of the mscorlib.dll
-                }
-            };
-            var resources = new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } };
-            _assemblyGenerator.Generate(assemblySource, ResourcesAssemblyDllPath, resources);
+            File.WriteAllText(Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesAssemblyName + ".cs"), sourceFromResources, Encoding.UTF8);
+
         }
 
         private bool GenerateNewResourcesResx()
@@ -119,7 +104,7 @@ namespace Rhetos.MvcModelGenerator
             // The ICaptionsResourceGeneratorPlugin interface can be deleted, and the code from CaptionsInitialCodePlugin called directly.
             // We could leave ICaptionsResourceGeneratorPlugin just in case we need to add
             // to the resx file something other then simple "data" elements for captions.
-            Rhetos.Compiler.IAssemblySource generatedSource = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
+            var generatedSource = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
             string resxContext = generatedSource.GeneratedCode;
             resxContext = CleanupXml(resxContext);
 

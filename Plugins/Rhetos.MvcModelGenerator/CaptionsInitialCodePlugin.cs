@@ -17,10 +17,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
 using Rhetos.Compiler;
 using Rhetos.Dsl;
-using System.Security;
 using System.Linq;
 
 namespace Rhetos.MvcModelGenerator

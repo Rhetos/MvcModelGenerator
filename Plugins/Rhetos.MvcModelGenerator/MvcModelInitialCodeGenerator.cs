@@ -17,14 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
-using System.Configuration;
 using Rhetos.Compiler;
 using Rhetos.Dsl;
 using System.ComponentModel.Composition;
 using Rhetos.Extensibility;
 using Rhetos.Utilities;
-using System.Reflection;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -45,13 +42,6 @@ namespace Rhetos.MvcModelGenerator
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
             codeBuilder.InsertCode(CodeSnippet);
-
-            codeBuilder.AddReference(CaptionsResourceGenerator.GetResourcesAssemblyDllPath(_rhetosBuildEnvironment.GeneratedAssetsFolder));
-            codeBuilder.AddReferencesFromDependency(typeof(Guid));
-            codeBuilder.AddReferencesFromDependency(typeof(System.Linq.Enumerable));
-            codeBuilder.AddReference(Assembly.Load("System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
-            codeBuilder.AddReference(Assembly.Load("System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
-            codeBuilder.AddReference(Assembly.Load("System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
         }
 
         private string CodeSnippet =
