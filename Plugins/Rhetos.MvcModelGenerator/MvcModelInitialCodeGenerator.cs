@@ -24,6 +24,7 @@ using Rhetos.Dsl;
 using System.ComponentModel.Composition;
 using Rhetos.Extensibility;
 using Rhetos.Utilities;
+using System.Reflection;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -48,8 +49,9 @@ namespace Rhetos.MvcModelGenerator
             codeBuilder.AddReference(CaptionsResourceGenerator.GetResourcesAssemblyDllPath(_rhetosBuildEnvironment.GeneratedAssetsFolder));
             codeBuilder.AddReferencesFromDependency(typeof(Guid));
             codeBuilder.AddReferencesFromDependency(typeof(System.Linq.Enumerable));
-            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DefaultValueAttribute)); // using namespace System.ComponentModel
-            codeBuilder.AddReferencesFromDependency(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)); // using namespace System.ComponentModel.DataAnnotations
+            codeBuilder.AddReference(Assembly.Load("System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
+            codeBuilder.AddReference(Assembly.Load("System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
+            codeBuilder.AddReference(Assembly.Load("System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location);
         }
 
         private string CodeSnippet =

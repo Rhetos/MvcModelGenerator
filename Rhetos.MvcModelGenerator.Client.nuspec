@@ -11,10 +11,13 @@
       It automatically generates ASP.NET MVC model for all entities and other queryable data structures that are defined in a Rhetos application.</description>
     <copyright>Copyright Omega software 2015</copyright>
     <tags>Rhetos plugin</tags>
+    <dependencies>
+      <dependency id="System.ComponentModel.Annotations" version="5.0.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
-    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.dll" target="lib\net451" />
-    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\Rhetos.Mvc.Client.pdb" target="lib\net451" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\netstandard2.0\Rhetos.Mvc.Client.dll" target="lib\netstandard2.0" />
+    <file src="Plugins\Rhetos.Mvc.Client\bin\Debug\netstandard2.0\Rhetos.Mvc.Client.pdb" target="lib\netstandard2.0" />
   </files>
 </package>

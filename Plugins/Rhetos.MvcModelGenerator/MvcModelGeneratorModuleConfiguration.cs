@@ -18,9 +18,8 @@
 */
 
 using Autofac;
-using Rhetos.Dsl;
+using Rhetos.Utilities;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -37,9 +36,12 @@ namespace Rhetos.MvcModelGenerator
             builder.RegisterType<CaptionsInitialCodePlugin>();
             builder.RegisterType<AssemblyGenerator>().As<IAssemblyGenerator>();
 
-            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<IMvcModelGeneratorPlugin>(builder);
-            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<ICaptionsResourceGeneratorPlugin>(builder);
-            Rhetos.Extensibility.Plugins.FindAndRegisterPlugins<ICaptionsValuePlugin>(builder);
+            builder.Register(context => context.Resolve<IConfiguration>().GetOptions<MvcModelGeneratorOptions>()).SingleInstance();
+
+            var pluginRegistration = builder.GetPluginRegistration();
+            pluginRegistration.FindAndRegisterPlugins<IMvcModelGeneratorPlugin>();
+            pluginRegistration.FindAndRegisterPlugins<ICaptionsResourceGeneratorPlugin>();
+            pluginRegistration.FindAndRegisterPlugins<ICaptionsValuePlugin>();
 
             base.Load(builder);
         }

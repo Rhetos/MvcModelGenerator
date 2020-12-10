@@ -17,13 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using Microsoft.CSharp;
 using Rhetos.Compiler;
 using Rhetos.Extensibility;
 using Rhetos.Logging;
 using Rhetos.Utilities;
 using System;
-using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -31,9 +29,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Resources;
-using System.Resources.Tools;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -87,8 +85,9 @@ namespace Rhetos.MvcModelGenerator
             string sourceFromResources;
             if (GenerateNewResourcesResx())
             {
-                CompileResourceFile();
-                sourceFromResources = GenerateSourceFromCompiledResources();
+                var resxKeyValuePairs = GetKeyValuePairsFromResxFile(ResourcesFilePath);
+                CompileResourceFile(resxKeyValuePairs);
+                sourceFromResources = GenerateSourceFromCompiledResources(resxKeyValuePairs);
             }
             else
             {
@@ -104,7 +103,6 @@ namespace Rhetos.MvcModelGenerator
                 RegisteredReferences = new List<string>
                 {
                     typeof(object).Assembly.Location, // Location of the mscorlib.dll
-                    typeof(Uri).Assembly.Location // Location of the System.dll
                 }
             };
             var resources = new List<ManifestResource> { new ManifestResource { Name = Path.GetFileName(CompiledResourcesFilePath), Path = CompiledResourcesFilePath, IsPublic = true } };
@@ -168,57 +166,138 @@ namespace Rhetos.MvcModelGenerator
             return resourcesXml;
         }
 
-        private void CompileResourceFile()
+
+        private IEnumerable<KeyValuePair<string, string>> GetKeyValuePairsFromResxFile(string path)
+        {
+            return XDocument.Load(path).Root.Descendants("data").Select(x => KeyValuePair.Create(x.Attribute("name").Value, x.Element("value").Value));
+        }
+
+        private void CompileResourceFile(IEnumerable<KeyValuePair<string, string>> resxKeyValuePairs)
         {
             var sw = Stopwatch.StartNew();
-            ResXResourceReader resxReader = new ResXResourceReader(ResourcesFilePath);
-            IDictionaryEnumerator resxEnumerator = resxReader.GetEnumerator();
 
             using (IResourceWriter writer = new ResourceWriter(CompiledResourcesFilePath))
             {
-                while (resxEnumerator.MoveNext())
+                foreach (var resxKeyValue in resxKeyValuePairs)
                 {
                     try
                     {
-                        writer.AddResource(resxEnumerator.Key.ToString(), resxEnumerator.Value);
+                        writer.AddResource(resxKeyValue.Key.ToString(), resxKeyValue.Value);
                     }
                     catch (Exception ex)
                     {
-                        throw new FrameworkException(string.Format("Error while compiling resource file \"{0}\" on key \"{1}\".", ResourcesFileName, resxEnumerator.Key.ToString()), ex);
+                        throw new FrameworkException(string.Format("Error while compiling resource file \"{0}\" on key \"{1}\".", ResourcesFileName, resxKeyValue.Key.ToString()), ex);
                     }
                 }
 
                 writer.Generate();
                 writer.Close();
             }
-            resxReader.Close();
             _cacheUtility.CopyToCache(CompiledResourcesFilePath);
             _performanceLogger.Write(sw, nameof(CompileResourceFile));
+        }
+
+        //The StronglyTypedResourceBuilder was generating the Captions.cs file with the value splitted in this way
+        //so we are keeping the same functionality
+        private IEnumerable<string> SplitStringForCaptionsValue(string str)
+        {
+            var firstChunkSize = 81;
+            var otherChunkSizes = 80;
+            yield return str.Substring(0, Math.Min(firstChunkSize, str.Length));
+            for (int i = 81; i < str.Length; i += otherChunkSizes)
+                yield return str.Substring(i, Math.Min(otherChunkSizes, str.Length - i));
         }
 
         /// <summary>
         /// Generates "resources.cs" file. In standard projects, it is generated automatically by Visual Studio.
         /// </summary>
-        private string GenerateSourceFromCompiledResources()
+        private string GenerateSourceFromCompiledResources(IEnumerable<KeyValuePair<string, string>> resxKeyValuePairs)
         {
             var sw = Stopwatch.StartNew();
-            string[] errors;
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            CodeCompileUnit code = StronglyTypedResourceBuilder.Create(ResourcesFilePath, ResourcesClassName, ResourcesNamespaceName, "", provider, false, out errors);
 
-            if (errors.Length > 0)
+            var sb = new StringBuilder();
+            sb.Append(@"//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+namespace Rhetos.Mvc {
+    using System;
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(""System.Resources.Tools.StronglyTypedResourceBuilder"", ""4.0.0.0"")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    public class Captions {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(""Microsoft.Performance"", ""CA1811:AvoidUncalledPrivateCode"")]
+        internal Captions() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(""Captions"", typeof(Captions).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+");
+            foreach (var resxKeyValue in resxKeyValuePairs)
             {
-                foreach (var error in errors)
-                    _logger.Error(error);
-
-                throw new Rhetos.FrameworkException(string.Format(
-                    "{0} errors in generated resource file '{1}'. First error: {2}",
-                    errors.Length, ResourcesFilePath, errors[0]));
+                var formatedKey = string.Join($" +{Environment.NewLine}                        " , SplitStringForCaptionsValue(resxKeyValue.Key).Select(k => $"\"{k}\""));
+                sb.Append(@$"        
+        /// <summary>
+        ///   Looks up a localized string similar to {resxKeyValue.Value}.
+        /// </summary>
+        public static string {resxKeyValue.Key} {{
+            get {{
+                return ResourceManager.GetString({formatedKey}, resourceCulture);
+            }}
+        }}
+");
             }
 
-            var writer = new StringWriter();
-            provider.GenerateCodeFromCompileUnit(code, writer, new System.CodeDom.Compiler.CodeGeneratorOptions());
-            var sourceCode = writer.ToString();
+            sb.Append(@"    }
+}
+");
+
+            var sourceCode = sb.ToString();
 
             File.WriteAllText(SourceFromCompiledResources, sourceCode);
             _cacheUtility.CopyToCache(SourceFromCompiledResources);
