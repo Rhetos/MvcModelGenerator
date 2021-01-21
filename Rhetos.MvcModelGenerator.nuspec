@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Rhetos.MvcModelGenerator</id>
-    <version>3.2.0-dev</version>
+    <version>5.0.0-dev</version>
     <authors>Omega software</authors>
     <owners>Omega software</owners>
     <licenseUrl>http://opensource.org/licenses/AGPL-3.0</licenseUrl>
@@ -13,15 +13,15 @@
     <tags>Rhetos plugin</tags>
     <dependencies>
       <dependency id="Rhetos.CommonConcepts" version="5.0.0-dev" />
-      <dependency id="Rhetos.MvcModelGenerator.Client" version="3.2.0-dev" />
+      <dependency id="Rhetos.MvcModelGenerator.Client" version="5.0.0-dev" />
     </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
     <file src="ChangeLog.md" target="" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\netstandard2.1\Rhetos.MvcModelGenerator.dll" target="lib\netstandard2.1" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\netstandard2.1\Rhetos.MvcModelGenerator.pdb" target="lib\netstandard2.1" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\netstandard2.1\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\netstandard2.1" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\netstandard2.1\Rhetos.MvcModelGenerator.DefaultConcepts.pdb" target="lib\netstandard2.1" />
+    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net5.0\Rhetos.MvcModelGenerator.dll" target="lib\net5.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net5.0\Rhetos.MvcModelGenerator.pdb" target="lib\net5.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net5.0\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\net5.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net5.0\Rhetos.MvcModelGenerator.DefaultConcepts.pdb" target="lib\net5.0" />
   </files>
 </package>

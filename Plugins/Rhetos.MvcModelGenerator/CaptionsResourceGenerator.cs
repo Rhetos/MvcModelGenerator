@@ -104,8 +104,7 @@ namespace Rhetos.MvcModelGenerator
             // The ICaptionsResourceGeneratorPlugin interface can be deleted, and the code from CaptionsInitialCodePlugin called directly.
             // We could leave ICaptionsResourceGeneratorPlugin just in case we need to add
             // to the resx file something other then simple "data" elements for captions.
-            var generatedSource = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
-            string resxContext = generatedSource.GeneratedCode;
+            var resxContext = _codeGenerator.ExecutePlugins(_plugins, "<!--", "-->", _initialCodePlugin);
             resxContext = CleanupXml(resxContext);
 
             _performanceLogger.Write(sw, "GenerateNewResourcesResx: ExecutePlugins and cleanup.");

@@ -57,8 +57,6 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
 			if (IsEntityType(info))
 				Dom.DefaultConcepts.DataStructureCodeGenerator.AddInterfaceAndReference(codeBuilder, typeof(Mvc.BaseMvcModel), info);
 
-			codeBuilder.AddReferencesFromDependency(typeof(Mvc.BaseMvcModel));
-
             LocalizedDisplayAttribute.InsertOrOverrideAttribute(codeBuilder, info, LocalizedDisplayAttributeProperties(info));
         }
 

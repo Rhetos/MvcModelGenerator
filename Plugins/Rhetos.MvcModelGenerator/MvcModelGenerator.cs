@@ -58,7 +58,7 @@ namespace Rhetos.MvcModelGenerator
         public void Generate()
         {
             var sw = Stopwatch.StartNew();
-            var generatedSourceCode = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null).GeneratedCode;
+            var generatedSourceCode = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null);
 
             generatedSourceCode = Regex.Replace(generatedSourceCode, detectLineTag, "\n");
             generatedSourceCode = Regex.Replace(generatedSourceCode, detectTag, "");
