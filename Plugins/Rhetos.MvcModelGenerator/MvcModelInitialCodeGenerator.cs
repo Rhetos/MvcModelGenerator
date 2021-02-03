@@ -19,9 +19,8 @@
 
 using Rhetos.Compiler;
 using Rhetos.Dsl;
-using System.ComponentModel.Composition;
 using Rhetos.Extensibility;
-using Rhetos.Utilities;
+using System.ComponentModel.Composition;
 
 namespace Rhetos.MvcModelGenerator
 {
@@ -29,32 +28,29 @@ namespace Rhetos.MvcModelGenerator
     [ExportMetadata(MefProvider.Implements, typeof(InitializationConcept))]
     public class MvcModelInitialCodeGenerator : IMvcModelGeneratorPlugin
     {
-        public const string UsingTag = "/*using*/";
-        public const string OverrideCaptionsResourceClassTag = "/*OverrideCaptionsResourceClass*/";
+        public static readonly string UsingTag = "/*using*/";
+        public static readonly string OverrideCaptionsResourceClassTag = "/*OverrideCaptionsResourceClass*/";
 
-        private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
+        private readonly MvcModelGeneratorOptions _options;
 
-        public MvcModelInitialCodeGenerator(RhetosBuildEnvironment rhetosBuildEnvironment)
+        public MvcModelInitialCodeGenerator(MvcModelGeneratorOptions options)
         {
-            _rhetosBuildEnvironment = rhetosBuildEnvironment;
+            _options = options;
         }
 
         public void GenerateCode(IConceptInfo conceptInfo, ICodeBuilder codeBuilder)
         {
-            codeBuilder.InsertCode(CodeSnippet);
-        }
-
-        private string CodeSnippet =
-@"
+            string codeSnippet =
+$@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using CaptionsResourceClass = " + OverrideCaptionsResourceClassTag + " " + Rhetos.MvcModelGenerator.CaptionsResourceGenerator.ResourcesClassFullName + @";
+using CaptionsResourceClass = {OverrideCaptionsResourceClassTag} {_options.CaptionsClassNamespace}.{_options.CaptionsClassName};
 
-" + UsingTag + @"
+{UsingTag}
 
 /*
     If you need to use additional DataAnnotation attributes, or override existing attributes in the generated MvcModel,
@@ -62,19 +58,21 @@ using CaptionsResourceClass = " + OverrideCaptionsResourceClassTag + " " + Rheto
 
     [MetadataTypeAttribute(typeof(MyModel.AdditionalAttributes))]
     public partial class MyModel
-    {
+    {{
         internal sealed class AdditionalAttributes
-        {
-            private AdditionalAttributes() { }
+        {{
+            private AdditionalAttributes() {{ }}
 
             [Display(Name = ""Last Name"", Order = 1, Prompt = ""Enter Last Name"")]
-            public string LastName { get; set; }
+            public string LastName {{ get; set; }}
 
             // Add other properties ...
-        }
-    }
+        }}
+    }}
 */
 
 ";
+            codeBuilder.InsertCode(codeSnippet);
+        }
     }
 }
