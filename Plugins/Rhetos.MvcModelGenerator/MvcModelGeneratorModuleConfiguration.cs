@@ -36,7 +36,7 @@ namespace Rhetos.MvcModelGenerator
             builder.RegisterType<CaptionsInitialCodePlugin>();
             builder.Register(context => context.Resolve<IConfiguration>().GetOptions<MvcModelGeneratorOptions>()).SingleInstance();
 
-            var pluginRegistration = builder.GetPluginRegistration();
+            var pluginRegistration = builder.GetRhetosPluginRegistration();
             pluginRegistration.FindAndRegisterPlugins<IMvcModelGeneratorPlugin>();
             pluginRegistration.FindAndRegisterPlugins<ICaptionsResourceGeneratorPlugin>();
             pluginRegistration.FindAndRegisterPlugins<ICaptionsValuePlugin>();
