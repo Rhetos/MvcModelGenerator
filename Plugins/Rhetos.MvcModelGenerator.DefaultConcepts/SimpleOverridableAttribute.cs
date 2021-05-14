@@ -27,7 +27,6 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
     /// Use instead of OverridableAttribute, when a new attribute should allways (or never) override existing attribute,
     /// regardless of the attribute's properties (value).
     /// </summary>
-    /// <typeparam name="TAttributeValue"></typeparam>
     public class SimpleOverridableAttribute : SimpleOverridableAttribute<PropertyInfo>
     {
         public SimpleOverridableAttribute(string attributeName, bool overrideOldValue)
