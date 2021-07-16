@@ -33,7 +33,7 @@ namespace Rhetos.MvcModelGenerator.DefaultConcepts
         public static readonly CsTag<DataStructureInfo> PropertiesTag = "Properties";
         public static readonly CsTag<DataStructureInfo> AttributesTag = "Attributes";
 
-		[Obsolete]
+		[Obsolete("All data structures are supported.")]
         public static bool IsSupported(DataStructureInfo conceptInfo)
         {
             return true;
