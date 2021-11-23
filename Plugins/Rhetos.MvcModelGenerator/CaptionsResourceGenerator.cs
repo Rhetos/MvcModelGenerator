@@ -76,22 +76,20 @@ namespace Rhetos.MvcModelGenerator
         public void Generate()
         {
             string sourceFromResources;
-            if (GenerateNewResourcesResx())
+            if (GenerateNewResourcesResx()) // generates ResourcesFilePath
             {
                 var resxKeyValuePairs = GetKeyValuePairsFromResxFile(ResourcesFilePath);
-                CompileResourceFile(resxKeyValuePairs);
-                sourceFromResources = GenerateSourceFromCompiledResources(resxKeyValuePairs);
+                CompileResourceFile(resxKeyValuePairs); // generates CompiledResourcesFilePath
+                sourceFromResources = GenerateSourceFromCompiledResources(resxKeyValuePairs); // generates SourceFromCompiledResources
             }
             else
             {
-                _cacheUtility.CopyFromCache(ResourcesFilePath);
                 _cacheUtility.CopyFromCache(CompiledResourcesFilePath);
                 _cacheUtility.CopyFromCache(SourceFromCompiledResources);
                 sourceFromResources = File.ReadAllText(SourceFromCompiledResources);
             }
 
             File.WriteAllText(Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesAssemblyName + ".cs"), sourceFromResources, Encoding.UTF8);
-
         }
 
         private bool GenerateNewResourcesResx()
@@ -118,7 +116,10 @@ namespace Rhetos.MvcModelGenerator
             {
                 _logger.Trace(() => $"'{ResourcesFilePath}' hash not changed, using cache.");
                 if (_cacheUtility.FileIsCached(CompiledResourcesFilePath) && _cacheUtility.FileIsCached(SourceFromCompiledResources))
+                {
+                    _cacheUtility.CopyFromCache(ResourcesFilePath);
                     return false;
+                }
 
                 _logger.Trace(() => $"'{CompiledResourcesFilePath}' and '{SourceFromCompiledResources}' expected in cache, but some are missing.");
             }
