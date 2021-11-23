@@ -17,4 +17,9 @@
     <ProjectReference Include="..\Rhetos.MvcModelGenerator.DefaultConcepts\Rhetos.MvcModelGenerator.DefaultConcepts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Rhetos.CommonConcepts" Version="5.0.0-dev*" />
+    <PackageReference Include="Rhetos.MSBuild" Version="5.0.0-dev*" />
+  </ItemGroup>
+
 </Project>

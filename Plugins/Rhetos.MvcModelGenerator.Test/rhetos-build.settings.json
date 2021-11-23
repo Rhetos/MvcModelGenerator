@@ -1,0 +1,6 @@
+﻿{
+  "MvcModelGenerator": {
+    "CaptionsClassName": "ABC",
+    "ResourceFullName": "A.B.Captions"
+  }
+}
