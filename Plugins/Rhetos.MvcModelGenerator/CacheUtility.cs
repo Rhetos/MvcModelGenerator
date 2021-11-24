@@ -58,7 +58,7 @@ namespace Rhetos.MvcModelGenerator
 
         public bool FileIsCached(string file)
         {
-            if (!File.Exists(GetCachedFile(file)))
+            if (!File.Exists(GetCachedFilePath(file)))
                 return false;
             return true;
         }
@@ -66,27 +66,38 @@ namespace Rhetos.MvcModelGenerator
         public void CopyToCache(string file)
         {
             CreateCacheDirectoryIfNotExist();
-            _filesUtility.SafeCopyFile(file, GetCachedFile(file), true);
+            _filesUtility.SafeCopyFile(file, GetCachedFilePath(file), true);
         }
 
         public void RemoveFromCache(string filePath)
         {
-            var cachedFilePath = GetCachedFile(filePath);
+            var cachedFilePath = GetCachedFilePath(filePath);
             if (File.Exists(cachedFilePath))
                 _filesUtility.SafeDeleteFile(cachedFilePath);
         }
 
         public void CopyFromCache(string file)
         {
-            _filesUtility.SafeCopyFile(GetCachedFile(file), file);
+            _filesUtility.SafeCopyFile(GetCachedFilePath(file), file);
         }
 
-        private string GetCachedFile(string file) => Path.Combine(_cacheDirectory, Path.GetFileName(file));
+        private string GetCachedFilePath(string file) => Path.Combine(_cacheDirectory, Path.GetFileName(file));
 
         private void CreateCacheDirectoryIfNotExist()
         {
             if (!Directory.Exists(_cacheDirectory))
                 Directory.CreateDirectory(_cacheDirectory);
+        }
+
+        public void WriteToCache(string fileName, string content)
+        {
+            CreateCacheDirectoryIfNotExist();
+            File.WriteAllText(GetCachedFilePath(fileName), content);
+        }
+
+        public string ReadFromCache(string fileName)
+        {
+            return File.ReadAllText(GetCachedFilePath(fileName));
         }
     }
 }

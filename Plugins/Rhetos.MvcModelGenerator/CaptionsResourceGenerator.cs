@@ -72,22 +72,38 @@ namespace Rhetos.MvcModelGenerator
         public string ResourcesFilePath => Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesFileName);
         public string CompiledResourcesFilePath => Path.ChangeExtension(ResourcesFilePath, "resources");
         public string SourceFromCompiledResources => $"{CompiledResourcesFilePath}.cs";
+        public string CsGeneratorVersionFile => $"{Path.GetFileName(SourceFromCompiledResources)}.version";
 
         public void Generate()
         {
+            // Generate ResourcesFilePath:
+
+            bool resxModified = GenerateNewResourcesResx();
+
+            var resxKeyValuePairs = new Lazy<IEnumerable<KeyValuePair<string, string>>>(
+                () => GetKeyValuePairsFromResxFile(ResourcesFilePath));
+
+            // Generate CompiledResourcesFilePath:
+
+            if (resxModified)
+                CompileResourceFile(resxKeyValuePairs.Value);
+            else
+                _cacheUtility.CopyFromCache(CompiledResourcesFilePath);
+
+            // Generate SourceFromCompiledResources:
+
             string sourceFromResources;
-            if (GenerateNewResourcesResx()) // generates ResourcesFilePath
+            if (resxModified || IsCodeGeneratorModified())
             {
-                var resxKeyValuePairs = GetKeyValuePairsFromResxFile(ResourcesFilePath);
-                CompileResourceFile(resxKeyValuePairs); // generates CompiledResourcesFilePath
-                sourceFromResources = GenerateSourceFromCompiledResources(resxKeyValuePairs); // generates SourceFromCompiledResources
+                sourceFromResources = GenerateSourceFromCompiledResources(resxKeyValuePairs.Value);
             }
             else
             {
-                _cacheUtility.CopyFromCache(CompiledResourcesFilePath);
                 _cacheUtility.CopyFromCache(SourceFromCompiledResources);
                 sourceFromResources = File.ReadAllText(SourceFromCompiledResources);
             }
+
+            // Write source to ResourcesAssemblyName cs:
 
             File.WriteAllText(Path.Combine(_rhetosBuildEnvironment.GeneratedAssetsFolder, ResourcesAssemblyName + ".cs"), sourceFromResources, Encoding.UTF8);
         }
@@ -193,11 +209,34 @@ namespace Rhetos.MvcModelGenerator
                 yield return str.Substring(i, Math.Min(otherChunkSizes, str.Length - i));
         }
 
+        private bool IsCodeGeneratorModified()
+        {
+            bool currentCsGeneratorMatchesCache =
+                _cacheUtility.FileIsCached(CsGeneratorVersionFile)
+                && _cacheUtility.ReadFromCache(CsGeneratorVersionFile) == GetCurrentCsGeneratorVersion();
+
+            return !currentCsGeneratorMatchesCache;
+        }
+
+        private string GetCurrentCsGeneratorVersion()
+        {
+            string csGeneratorVersion = "1"; // Increase this when modifying code in GenerateSourceFromCompiledResources() method.
+            string versionAndOptions = Newtonsoft.Json.JsonConvert.SerializeObject(
+                new
+                {
+                    CodeGeneratorVersion = csGeneratorVersion,
+                    Options = _options
+                });
+            return versionAndOptions;
+        }
+
         /// <summary>
         /// Generates "resources.cs" file. In standard projects, it is generated automatically by Visual Studio.
         /// </summary>
         private string GenerateSourceFromCompiledResources(IEnumerable<KeyValuePair<string, string>> resxKeyValuePairs)
         {
+            // NOTE: When modifying the generated code below, increase the csGeneratorVersion in GetCurrentCsGeneratorVersion() method below.
+
             var sw = Stopwatch.StartNew();
 
             var sb = new StringBuilder();
@@ -265,7 +304,7 @@ namespace Rhetos.MvcModelGenerator
 ");
             foreach (var resxKeyValue in resxKeyValuePairs)
             {
-                var formatedKey = string.Join($" +{Environment.NewLine}                        " , SplitStringForCaptionsValue(resxKeyValue.Key).Select(k => $"\"{k}\""));
+                var formatedKey = string.Join($" +{Environment.NewLine}                        ", SplitStringForCaptionsValue(resxKeyValue.Key).Select(k => $"\"{k}\""));
                 sb.Append($@"        
         /// <summary>
         ///   Looks up a localized string similar to {resxKeyValue.Value}.
@@ -286,6 +325,8 @@ namespace Rhetos.MvcModelGenerator
 
             File.WriteAllText(SourceFromCompiledResources, sourceCode);
             _cacheUtility.CopyToCache(SourceFromCompiledResources);
+            _cacheUtility.WriteToCache(CsGeneratorVersionFile, GetCurrentCsGeneratorVersion());
+
             _performanceLogger.Write(sw, nameof(GenerateSourceFromCompiledResources));
             return sourceCode;
         }
