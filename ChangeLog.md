@@ -1,9 +1,10 @@
 # MvcModelGenerator release notes
 
-## 3.2.0 (TO BE RELEASED)
+## 5.0.0 (TO BE RELEASED)
 
 ### Breaking changes
 
+* Migrated from .NET Framework to .NET 5 and Rhetos 5.
 * MvcModelGenerator no longer compiles Rhetos.Mvc.dll and Captions.dll, it only generates the source files.
   If an existing MVC application referenced the generated DLL files,
   modify it to use source files directly (see Options A below),
