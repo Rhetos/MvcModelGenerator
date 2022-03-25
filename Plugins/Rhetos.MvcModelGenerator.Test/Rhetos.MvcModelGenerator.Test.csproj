@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Rhetos.CommonConcepts" Version="5.0.0-dev*" />
-    <PackageReference Include="Rhetos.MSBuild" Version="5.0.0-dev*" />
+    <PackageReference Include="Rhetos.CommonConcepts" Version="5.0.0" />
+    <PackageReference Include="Rhetos.MSBuild" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
