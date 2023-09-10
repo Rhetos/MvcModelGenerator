@@ -76,6 +76,12 @@ namespace Rhetos.MvcModelGenerator
 
         public void Generate()
         {
+            if (!_options.GenerateCaptionsResource)
+            {
+                _logger.Trace(() => $"Skipped generating captions resource files because the option {nameof(MvcModelGeneratorOptions.GenerateCaptionsResource)} is disabled.");
+                return;
+            }
+
             // Generate ResourcesFilePath:
 
             bool resxModified = GenerateNewResourcesResx();

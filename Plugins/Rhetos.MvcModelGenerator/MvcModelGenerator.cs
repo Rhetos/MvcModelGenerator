@@ -35,21 +35,26 @@ namespace Rhetos.MvcModelGenerator
     {
         private readonly IPluginsContainer<IMvcModelGeneratorPlugin> _plugins;
         private readonly ICodeGenerator _codeGenerator;
+        private readonly ILogger _logger;
         private readonly ILogger _performanceLogger;
         private readonly RhetosBuildEnvironment _rhetosBuildEnvironment;
+        private readonly MvcModelGeneratorOptions _options;
         public const string AssemblyName = "Rhetos.Mvc";
 
         public MvcModelGenerator(
             IPluginsContainer<IMvcModelGeneratorPlugin> plugins,
             ICodeGenerator codeGenerator,
             ILogProvider logProvider,
-            RhetosBuildEnvironment rhetosBuildEnvironment
+            RhetosBuildEnvironment rhetosBuildEnvironment,
+            MvcModelGeneratorOptions options
         )
         {
             _plugins = plugins;
             _codeGenerator = codeGenerator;
-            _rhetosBuildEnvironment = rhetosBuildEnvironment;
+            _logger = logProvider.GetLogger(GetType().Name);
             _performanceLogger = logProvider.GetLogger("Performance");
+            _rhetosBuildEnvironment = rhetosBuildEnvironment;
+            _options = options;
         }
 
         const string detectLineTag = @"\n\s*/\*.*?\*/\s*\r?\n";
@@ -57,6 +62,12 @@ namespace Rhetos.MvcModelGenerator
 
         public void Generate()
         {
+            if (!_options.GenerateMvcModel)
+            {
+                _logger.Trace(() => $"Skipped generating MVC model file because the option {nameof(MvcModelGeneratorOptions.GenerateMvcModel)} is disabled.");
+                return;
+            }
+
             var sw = Stopwatch.StartNew();
             var generatedSourceCode = _codeGenerator.ExecutePlugins(_plugins, "/*", "*/", null);
 
