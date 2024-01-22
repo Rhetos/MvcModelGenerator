@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Rhetos.CommonConcepts" Version="5.0.0" />
+    <PackageReference Include="Rhetos.CommonConcepts" Version="6.0.0-dev24011711054c6feb" />
   </ItemGroup>
 
 </Project>

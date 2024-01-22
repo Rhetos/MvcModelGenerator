@@ -12,16 +12,16 @@
     <copyright>Copyright Omega software 2015</copyright>
     <tags>Rhetos plugin</tags>
     <dependencies>
-      <dependency id="Rhetos.CommonConcepts" version="5.0.0" />
+      <dependency id="Rhetos.CommonConcepts" version="6.0.0-dev24011711054c6feb" />
       <dependency id="Rhetos.MvcModelGenerator.Client" version="6.0.0-dev" />
     </dependencies>
   </metadata>
   <files>
     <file src="Readme.md" target="" />
     <file src="ChangeLog.md" target="" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net5.0\Rhetos.MvcModelGenerator.dll" target="lib\net5.0" />
-    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net5.0\Rhetos.MvcModelGenerator.pdb" target="lib\net5.0" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net5.0\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\net5.0" />
-    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net5.0\Rhetos.MvcModelGenerator.DefaultConcepts.pdb" target="lib\net5.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net8.0\Rhetos.MvcModelGenerator.dll" target="lib\net8.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator\bin\Debug\net8.0\Rhetos.MvcModelGenerator.pdb" target="lib\net8.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net8.0\Rhetos.MvcModelGenerator.DefaultConcepts.dll" target="lib\net8.0" />
+    <file src="Plugins\Rhetos.MvcModelGenerator.DefaultConcepts\bin\Debug\net8.0\Rhetos.MvcModelGenerator.DefaultConcepts.pdb" target="lib\net8.0" />
   </files>
 </package>
