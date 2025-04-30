@@ -1,8 +1,17 @@
 # MvcModelGenerator release notes
 
+## 6.0.0 (TO BE RELEASED)
+
+Breaking changes:
+
+* Generator for MVC model C# source file "Rhetos.Mvc.cs" is disabled by default.
+  * To enable it set option `MvcModelGenerator:GenerateMvcModel` to true.
+* Generator for captions resource files "Captions.*" is disabled by default.
+  * To enable it set option `MvcModelGenerator:GenerateCaptionsResource` to true.
+
 ## 5.1.0 (TO BE RELEASED)
 
-* Added configuration options to disable generators for MVC model and captions files: MvcModelGenerator:GenerateMvcModel, MvcModelGenerator.GenerateCaptionsResource (see MvcModelGeneratorOptions class).
+* Added configuration options to disable generators for MVC model and captions files: MvcModelGenerator:GenerateMvcModel, MvcModelGenerator:GenerateCaptionsResource (see MvcModelGeneratorOptions class).
 
 ## 5.0.0 (2022-03-25)
 

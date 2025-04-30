@@ -41,14 +41,14 @@ namespace Rhetos.MvcModelGenerator
         /// The file is not compiled within the Rhetos app. It is intended to be copied to the ASP.NET MVC "frontend" app.
         /// See Readme.md for more info.
         /// </summary>
-        public bool GenerateMvcModel { get; set; } = true;
+        public bool GenerateMvcModel { get; set; } = false;
 
         /// <summary>
         /// Generated captions resource file with the corresponding source file "Captions.*"
         /// The files are not compiled within the Rhetos app. They are intended to be copied to the ASP.NET MVC "frontend" app.
         /// See Readme.md for more info.
         /// </summary>
-        public bool GenerateCaptionsResource { get; set; } = true;
+        public bool GenerateCaptionsResource { get; set; } = false;
 
         /// <summary>
         /// Name of the automatically generated class for accessing resources (Captions class).
