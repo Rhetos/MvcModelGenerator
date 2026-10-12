@@ -3,7 +3,7 @@
 MvcModelGenerator is a plugin package for [Rhetos development platform](https://github.com/Rhetos/Rhetos).
 It automatically generates **ASP.NET MVC model** for all entities and other queryable data structures that are defined in a Rhetos application.
 
-See [rhetos.org](http://www.rhetos.org/) for more information on Rhetos.
+See <https://github.com/Rhetos/Rhetos> for more information on Rhetos.
 
 Contents:
 
